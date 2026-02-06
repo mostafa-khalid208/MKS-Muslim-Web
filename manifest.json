@@ -9,25 +9,25 @@
     "orientation": "portrait-primary",
     "icons": [
         {
-            "src": "assets/images/My Logo Palestine.png",
+            "src": "assets/images/icon.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "assets/images/My Logo Palestine.png",
+            "src": "assets/images/icon.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "assets/images/My Logo Palestine.png",
+            "src": "assets/images/icon.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "assets/images/My Logo Palestine.png",
+            "src": "assets/images/icon.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
