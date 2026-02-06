@@ -1,8 +1,9 @@
 {
+    "id": "mks-muslim-web-app",
     "name": "MKS Muslim",
-    "short_name": "MKS",
+    "short_name": "MKS Muslim",
     "description": "تطبيق إسلامي شامل - Comprehensive Islamic App",
-    "start_url": "/index.html",
+    "start_url": "/MKS-Muslim-Web/index.html",
     "display": "standalone",
     "background_color": "#0c7936",
     "theme_color": "#0c7936",
@@ -36,7 +37,7 @@
     "categories": ["lifestyle", "education"],
     "lang": "ar",
     "dir": "rtl",
-    "scope": "/",
+    "scope": "/MKS-Muslim-Web/",
     "screenshots": [],
     "prefer_related_applications": false
 }
