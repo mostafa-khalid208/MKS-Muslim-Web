@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - بوصلة القبلة">
+    <title>MKS Muslim - البوصلة</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .compass-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .compass-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--card);
+            box-shadow: 0 10px 40px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .compass-bg::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid var(--surface);
+            border-radius: 50%;
+        }
+        .compass-needle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+        }
+        .compass-needle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 120px;
+            margin-left: -3px;
+            margin-top: -110px;
+            background: linear-gradient(to bottom, var(--primary) 0%, var(--primary) 50%, #D32F2F 50%, #D32F2F 100%);
+            border-radius: 3px;
+            transform-origin: bottom center;
+        }
+        .needle-point {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid var(--primary);
+        }
+        .kaaba-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(12, 121, 54, 0.3);
+        }
+        .direction-marker {
+            position: absolute;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .direction-marker.n { top: 25px; left: 50%; transform: translateX(-50%); color: var(--primary); }
+        .direction-marker.e { right: 25px; top: 50%; transform: translateY(-50%); }
+        .direction-marker.s { bottom: 25px; left: 50%; transform: translateX(-50%); }
+        .direction-marker.w { left: 25px; top: 50%; transform: translateY(-50%); }
+        .qibla-indicator {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 12px;
+            background: var(--gold);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .degree-display {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .degree-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: normal;
+        }
+        .status-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            margin-top: 20px;
+        }
+        .status-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .status-icon.success { background: rgba(76, 175, 80, 0.2); }
+        .status-icon.warning { background: rgba(255, 160, 0, 0.2); }
+        .status-icon.error { background: rgba(211, 47, 47, 0.2); }
+        
+        .iframe-container {
+            width: 100%;
+            height: calc(100vh - 120px);
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item active"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="qibla_compass">بوصلة القبلة</h1>
+            </div>
+            
+            <div class="compass-container fade-in">
+                <div class="compass-wrapper">
+                    <div class="compass-bg">
+                        <div class="direction-marker n">N</div>
+                        <div class="direction-marker e">E</div>
+                        <div class="direction-marker s">S</div>
+                        <div class="direction-marker w">W</div>
+                        <div class="compass-needle-container" id="compass-needle">
+                            <div class="compass-needle">
+                                <div class="needle-point"></div>
+                            </div>
+                        </div>
+                        <div class="kaaba-icon">🕋</div>
+                    </div>
+                </div>
+                
+                <div class="degree-display">
+                    <span id="qibla-degree">--</span>°
+                    <div class="degree-label" data-i18n="qibla_direction">اتجاه القبلة</div>
+                </div>
+            </div>
+            
+            <div class="status-card fade-in" id="status-card">
+                <div class="status-icon warning" id="status-icon">⏳</div>
+                <div>
+                    <div style="font-weight: 600; color: var(--text-primary);" id="status-title">جاري تحديد الموقع...</div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);" id="status-subtitle">يرجى السماح بالوصول للموقع</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="getQiblaDirection()" style="width: 100%;">
+                    <span>🔄</span>
+                    <span data-i18n="refresh">تحديث الموقع</span>
+                </button>
+            </div>
+            
+            <div class="card fade-in" style="margin-top: 20px;">
+                <div class="card-header">
+                    <div class="card-icon primary">📍</div>
+                    <div>
+                        <h3 class="card-title">موقعك الحالي</h3>
+                    </div>
+                </div>
+                <div id="location-info" style="color: var(--text-secondary);">
+                    غير محدد
+                </div>
+            </div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        let userLat = null;
+        let userLng = null;
+        let qiblaDirection = null;
+        let deviceHeading = 0;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            getQiblaDirection();
+            setupCompass();
+        });
+        
+        function getQiblaDirection() {
+            updateStatus('warning', '⏳', 'جاري تحديد الموقع...', 'يرجى السماح بالوصول للموقع');
+            
+            if (!navigator.geolocation) {
+                updateStatus('error', '❌', 'الموقع غير مدعوم', 'متصفحك لا يدعم تحديد الموقع');
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLat = position.coords.latitude;
+                    userLng = position.coords.longitude;
+                    
+                    // Calculate Qibla direction
+                    qiblaDirection = api.calculateQiblaDirection(userLat, userLng);
+                    
+                    document.getElementById('qibla-degree').textContent = Math.round(qiblaDirection);
+                    document.getElementById('location-info').innerHTML = `
+                        <div>خط العرض: ${userLat.toFixed(4)}°</div>
+                        <div>خط الطول: ${userLng.toFixed(4)}°</div>
+                    `;
+                    
+                    updateCompass();
+                    updateStatus('success', '✅', 'تم تحديد القبلة', `الزاوية: ${Math.round(qiblaDirection)}° من الشمال`);
+                },
+                (error) => {
+                    console.error('Geolocation error:', error);
+                    let message = 'فشل تحديد الموقع';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            message = 'تم رفض إذن الموقع';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message = 'الموقع غير متاح';
+                            break;
+                        case error.TIMEOUT:
+                            message = 'انتهت مهلة الطلب';
+                            break;
+                    }
+                    updateStatus('error', '❌', message, 'يرجى السماح بالوصول للموقع وإعادة المحاولة');
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+        
+        function setupCompass() {
+            // Try to use device orientation
+            if (window.DeviceOrientationEvent) {
+                // Check for iOS 13+ permission requirement
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    document.querySelector('.compass-wrapper').addEventListener('click', async () => {
+                        try {
+                            const permission = await DeviceOrientationEvent.requestPermission();
+                            if (permission === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                            }
+                        } catch (e) {
+                            console.error('Orientation permission error:', e);
+                        }
+                    });
+                } else {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            }
+        }
+        
+        function handleOrientation(event) {
+            if (event.alpha !== null) {
+                deviceHeading = event.alpha;
+                updateCompass();
+            }
+        }
+        
+        function updateCompass() {
+            if (qiblaDirection === null) return;
+            
+            // Calculate the rotation needed to point to Qibla
+            // The compass needle should point towards Qibla relative to the device orientation
+            const rotation = qiblaDirection - deviceHeading;
+            
+            document.getElementById('compass-needle').style.transform = `rotate(${rotation}deg)`;
+            
+            // Check if facing Qibla (within 15 degrees)
+            const normalizedRotation = ((rotation % 360) + 360) % 360;
+            const isFacingQibla = normalizedRotation < 15 || normalizedRotation > 345;
+            
+            if (isFacingQibla) {
+                updateStatus('success', '🕋', localization.tr('facing_qibla'), 'أنت تواجه الكعبة المشرفة');
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+            }
+        }
+        
+        function updateStatus(type, icon, title, subtitle) {
+            document.getElementById('status-icon').className = `status-icon ${type}`;
+            document.getElementById('status-icon').textContent = icon;
+            document.getElementById('status-title').textContent = title;
+            document.getElementById('status-subtitle').textContent = subtitle;
+        }
+    </script>
+</body>
+</html>

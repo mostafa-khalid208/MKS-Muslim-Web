@@ -1,0 +1,594 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - القرآن الكريم">
+    <title>MKS Muslim - القرآن الكريم</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item active"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="quran">القرآن الكريم</h1>
+            </div>
+            
+            <!-- Search -->
+            <div class="card fade-in" style="margin-bottom: 20px;">
+                <div class="input-group">
+                    <input type="text" class="input" id="surah-search" data-i18n-placeholder="search_surah" placeholder="ابحث عن سورة" oninput="filterSurahs()">
+                </div>
+            </div>
+            
+            <!-- Bookmarks Section (Moved to Top) -->
+            <div class="card fade-in" id="bookmarks-section" style="margin-bottom: 20px; display: none;">
+                <div class="card-header">
+                    <div class="card-icon primary">🔖</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="saved_places">الأماكن المحفوظة</h3>
+                    </div>
+                </div>
+                <div id="bookmarks-list"></div>
+            </div>
+            
+            <!-- Last Read -->
+            <div class="card fade-in" id="last-read-card" style="margin-bottom: 20px; display: none;">
+                <div class="card-header">
+                    <div class="card-icon primary">📑</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="last_read">آخر قراءة</h3>
+                        <p class="card-subtitle" id="last-read-surah"></p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="continueReading()" data-i18n="continue_reading">استمر في القراءة</button>
+            </div>
+            
+            <!-- Loading -->
+            <div class="loading" id="loading"><div class="spinner"></div></div>
+            
+            <!-- Surah List -->
+            <div id="surah-list" style="display: none;"></div>
+            
+            <!-- Surah Content (hidden initially) -->
+            <div id="surah-content" style="display: none;">
+                <div class="card">
+                    <button class="btn btn-secondary" onclick="backToList()" style="margin-bottom: 16px;">
+                        <span>←</span> <span data-i18n="nav_quran">القرآن</span>
+                    </button>
+                    <h2 id="surah-title" style="text-align: center; color: var(--primary); margin-bottom: 20px;"></h2>
+                    
+                    <!-- Play Full Surah Button -->
+                    <button class="play-surah-btn" id="play-surah-btn" onclick="togglePlaySurah()">
+                        <span id="play-surah-icon">▶️</span>
+                        <span id="play-surah-text" data-i18n="play_full_surah">تشغيل السورة كاملة</span>
+                    </button>
+                    
+                    <!-- Audio Player (persistent) -->
+                    <div id="audio-player" class="audio-player" style="display: none;">
+                        <button class="audio-player-btn" id="audio-control-btn" onclick="toggleAudioPlayback()">
+                            <span id="audio-icon">▶️</span>
+                        </button>
+                        <div class="audio-progress" onclick="seekAudio(event)">
+                            <div class="audio-progress-bar" id="audio-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <span id="current-verse-num" style="font-size: 0.875rem; color: var(--primary); font-weight: 600;">--</span>
+                    </div>
+                    
+                    <div id="ayat-container" style="line-height: 2.5; font-size: 1.5rem; text-align: justify; font-family: 'Traditional Arabic', serif;"></div>
+                </div>
+            </div>
+            
+            <!-- Verse Options Bar -->
+            <div class="verse-options-bar" id="verse-options-bar">
+                <button class="verse-option-btn" onclick="playSelectedVerse()">
+                    <span class="icon">🔊</span>
+                    <span class="label" data-i18n="play_verse">تشغيل</span>
+                </button>
+                <button class="verse-option-btn" id="option-bookmark" onclick="bookmarkSelectedVerse()">
+                    <span class="icon">🔖</span>
+                    <span class="label" data-i18n="save_position">حفظ</span>
+                </button>
+            </div>
+            
+            <!-- Bookmarks Section moved to top -->
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        let allSurahs = [];
+        let currentSurah = null;
+        let currentAyahs = [];
+        let audioPlayer = new Audio();
+        let isPlayingFullSurah = false;
+        let currentAyahIndex = 0;
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSurahs();
+            checkLastRead();
+            loadBookmarks();
+            setupAudioPlayer();
+        });
+        
+        function setupAudioPlayer() {
+            audioPlayer.addEventListener('ended', () => {
+                if (isPlayingFullSurah) {
+                    playNextAyah();
+                } else {
+                    resetAudioPlayer();
+                }
+            });
+            
+            audioPlayer.addEventListener('timeupdate', () => {
+                if (audioPlayer.duration) {
+                    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    document.getElementById('audio-progress-bar').style.width = `${progress}%`;
+                }
+            });
+        }
+        
+        async function loadSurahs() {
+            document.getElementById('loading').style.display = 'flex';
+            
+            try {
+                allSurahs = await api.getQuranSurahs();
+                displaySurahs(allSurahs);
+            } catch (error) {
+                console.error('Error loading surahs:', error);
+                document.getElementById('surah-list').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📖</div>
+                        <div class="empty-text">${localization.tr('error')}</div>
+                        <button class="btn btn-primary" onclick="loadSurahs()" style="margin-top: 16px;">${localization.tr('retry')}</button>
+                    </div>
+                `;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('surah-list').style.display = 'block';
+            }
+        }
+        
+        function displaySurahs(surahs) {
+            const list = document.getElementById('surah-list');
+            const isArabic = localization.isArabic;
+            
+            list.innerHTML = surahs.map(surah => `
+                <div class="list-item fade-in" onclick="openSurah(${surah.number})">
+                    <div class="item-number">${surah.number}</div>
+                    <div class="item-text">
+                        <div class="item-title">${surah.name}</div>
+                        <div class="item-subtitle">${surah.englishName} • ${surah.numberOfAyahs} ${isArabic ? 'آيات' : 'verses'}</div>
+                    </div>
+                    <span class="badge ${surah.revelationType === 'Meccan' ? '' : 'gold'}">${isArabic ? (surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية') : surah.revelationType}</span>
+                </div>
+            `).join('');
+        }
+        
+        function filterSurahs() {
+            const query = document.getElementById('surah-search').value.toLowerCase();
+            const filtered = allSurahs.filter(s => 
+                s.name.toLowerCase().includes(query) || 
+                s.englishName.toLowerCase().includes(query) ||
+                s.number.toString().includes(query)
+            );
+            displaySurahs(filtered);
+        }
+        
+        async function openSurah(number) {
+            document.getElementById('surah-list').style.display = 'none';
+            document.getElementById('last-read-card').style.display = 'none';
+            document.getElementById('bookmarks-section').style.display = 'none';
+            document.getElementById('surah-content').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex';
+            
+            // Reset audio state
+            stopAudio();
+            
+            try {
+                const surah = await api.getSurah(number);
+                currentSurah = surah;
+                currentAyahs = surah.ayahs;
+                const surahInfo = allSurahs.find(s => s.number === number);
+                
+                document.getElementById('surah-title').textContent = surah.name;
+                
+                // Build ayat HTML (Inline)
+                const ayatHtml = surah.ayahs.map((ayah, index) => {
+                     // Check bookmark status
+                     const isBookmarked = isAyahBookmarked(number, index);
+                     const bookmarkClass = isBookmarked ? 'marked' : ''; // CSS for marked verse if needed? Or just rely on sheet.
+                     
+                     return `
+                        <span class="verse ${bookmarkClass}" id="verse-${index}" onclick="selectVerse(${index}, ${number}, '${surah.name}')">
+                            <span class="verse-text">${ayah.text}</span>
+                            <span class="verse-number">${ayah.numberInSurah}</span>
+                        </span>
+                     `;
+                }).join('');
+                
+                const container = document.getElementById('ayat-container');
+                container.className = 'quran-container'; // Apply new class
+                container.innerHTML = ayatHtml;
+                
+                // Save last read
+                storage.lastReadSurah = number;
+                storage.set('lastReadSurahName', surahInfo?.name || '');
+                storage.set('lastReadAyah', 0);
+                
+            } catch (error) {
+                console.error('Error loading surah:', error);
+                document.getElementById('ayat-container').innerHTML = `<div class="empty-state"><div class="empty-text">${localization.tr('error')}</div></div>`;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        // Verse Selection & Options
+        let selectedAyahIndex = -1;
+        let selectedSurahNum = -1;
+        let selectedSurahName = "";
+
+        function selectVerse(index, surahNum, surahName) {
+            // Remove previous active class
+            if (selectedAyahIndex !== -1) {
+                const prev = document.getElementById(`verse-${selectedAyahIndex}`);
+                if (prev) prev.classList.remove('active');
+            }
+            
+            // Set new active
+            selectedAyahIndex = index;
+            selectedSurahNum = surahNum;
+            selectedSurahName = surahName; // Ensure name is passed or stored
+            // If surahName undefined (clicked from saved), use currentSurah.name
+            if (!selectedSurahName && currentSurah) selectedSurahName = currentSurah.name;
+
+            const curr = document.getElementById(`verse-${index}`);
+            if (curr) curr.classList.add('active');
+            
+            showVerseOptions(index);
+        }
+
+        function showVerseOptions(index) {
+            const bar = document.getElementById('verse-options-bar');
+            if (!bar) return; // Should exist in HTML
+            
+            // Update Bookmark Button State
+            const isBookmarked = isAyahBookmarked(selectedSurahNum, index);
+            const bookmarkBtn = document.getElementById('option-bookmark');
+            if (bookmarkBtn) {
+                const icon = bookmarkBtn.querySelector('.icon');
+                const label = bookmarkBtn.querySelector('.label');
+                if (isBookmarked) {
+                    bookmarkBtn.classList.add('active');
+                    icon.textContent = '⭐';
+                    label.textContent = localization.tr('saved') || 'Saved';
+                } else {
+                    bookmarkBtn.classList.remove('active');
+                    icon.textContent = '🔖';
+                    label.textContent = localization.tr('save_position');
+                }
+            }
+            
+            bar.classList.add('visible');
+        }
+
+        function hideVerseOptions() {
+            const bar = document.getElementById('verse-options-bar');
+            if (bar) bar.classList.remove('visible');
+            
+            // Deselect verse
+             if (selectedAyahIndex !== -1) {
+                const prev = document.getElementById(`verse-${selectedAyahIndex}`);
+                if (prev) prev.classList.remove('active');
+                selectedAyahIndex = -1;
+            }
+        }
+        
+        // Action Handlers
+        function playSelectedVerse() {
+            if (selectedAyahIndex === -1) return;
+            playAyah(selectedAyahIndex);
+            // Don't hide options immediately, or do? Maybe keep to allow stop.
+        }
+
+        function bookmarkSelectedVerse() {
+             if (selectedAyahIndex === -1) return;
+             toggleBookmark(selectedSurahNum, selectedAyahIndex, selectedSurahName);
+             // Update UI immediately (toggle state)
+             showVerseOptions(selectedAyahIndex); // Refresh state
+        }
+
+        // Close options when clicking outside
+        window.onclick = function(event) {
+             const bar = document.getElementById('verse-options-bar');
+             const isVerse = event.target.closest('.verse');
+             const isBar = event.target.closest('.verse-options-bar');
+             if (!isVerse && !isBar && bar && bar.classList.contains('visible')) {
+                 hideVerseOptions();
+             }
+        }
+
+        // Audio playback functions
+        function playAyah(index) {
+            if (!currentAyahs[index]) return;
+            
+            isPlayingFullSurah = false;
+            currentAyahIndex = index;
+            
+            const audioUrl = currentAyahs[index].audio;
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+            
+            showAudioPlayer();
+            // Highlight playing verse
+             if (selectedAyahIndex !== -1 && selectedAyahIndex !== index) {
+                  // If we manually selected another verse to play, switch selection
+                  selectVerse(index, currentSurah.number, currentSurah.name);
+             } else if (selectedAyahIndex === -1) {
+                  selectVerse(index, currentSurah.number, currentSurah.name);
+             }
+            
+            // Save read position
+            storage.set('lastReadAyah', index);
+        }
+        
+        function togglePlaySurah() {
+            if (isPlayingFullSurah && !audioPlayer.paused) {
+                stopAudio();
+            } else {
+                isPlayingFullSurah = true;
+                currentAyahIndex = 0;
+                playAyahInSequence(0);
+            }
+        }
+        
+        function playAyahInSequence(index) {
+            if (index >= currentAyahs.length) {
+                stopAudio();
+                return;
+            }
+            
+            currentAyahIndex = index;
+            // Auto Select/Highlight
+            selectVerse(index, currentSurah.number, currentSurah.name);
+
+            const audioUrl = currentAyahs[index].audio;
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+            
+            showAudioPlayer();
+            
+            // Scroll to verse
+            const verseEl = document.getElementById(`verse-${index}`);
+            if (verseEl) {
+                verseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            document.getElementById('play-surah-icon').textContent = '⏹️';
+            document.getElementById('play-surah-text').textContent = localization.tr('stop_surah');
+            document.getElementById('play-surah-btn').classList.add('playing');
+        }
+        
+        function playNextAyah() {
+            currentAyahIndex++;
+            if (currentAyahIndex < currentAyahs.length) {
+                playAyahInSequence(currentAyahIndex);
+            } else {
+                stopAudio();
+            }
+        }
+        
+        function toggleAudioPlayback() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                document.getElementById('audio-icon').textContent = '⏸️';
+            } else {
+                audioPlayer.pause();
+                document.getElementById('audio-icon').textContent = '▶️';
+            }
+        }
+        
+        function stopAudio() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            isPlayingFullSurah = false;
+            resetAudioPlayer();
+            
+            document.getElementById('play-surah-icon').textContent = '▶️';
+            document.getElementById('play-surah-text').textContent = localization.tr('play_full_surah');
+            document.getElementById('play-surah-btn').classList.remove('playing');
+            
+            // Remove highlight if not manually selected? Or keep?
+            // User might want to keep place. But typical player stops.
+            // hideVerseOptions();
+        }
+        
+        function showAudioPlayer() {
+            document.getElementById('audio-player').style.display = 'flex';
+            document.getElementById('audio-icon').textContent = '⏸️';
+        }
+        
+        function resetAudioPlayer() {
+            document.getElementById('audio-player').style.display = 'none';
+            document.getElementById('audio-progress-bar').style.width = '0%';
+        }
+        
+        // Removed updatePlayingState as selectVerse handles highlighting now.
+        
+        function seekAudio(event) {
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        }
+        
+        // Bookmark functions
+        function getBookmarks() {
+            return storage.get('quranBookmarks', []);
+        }
+        
+        function isAyahBookmarked(surahNumber, ayahIndex) {
+            const bookmarks = getBookmarks();
+            return bookmarks.some(b => b.surahNumber === surahNumber && b.ayahIndex === ayahIndex);
+        }
+        
+        function toggleBookmark(surahNumber, ayahIndex, surahName) {
+            let bookmarks = getBookmarks();
+            const existingIndex = bookmarks.findIndex(b => b.surahNumber === surahNumber && b.ayahIndex === ayahIndex);
+            
+            if (existingIndex >= 0) {
+                // Remove bookmark
+                bookmarks.splice(existingIndex, 1);
+                app.showToast(localization.tr('bookmark_deleted'), 'info');
+            } else {
+                // Add bookmark
+                bookmarks.push({
+                    id: Date.now().toString(),
+                    surahNumber,
+                    surahName,
+                    ayahIndex,
+                    verseNumber: ayahIndex + 1,
+                    timestamp: new Date().toISOString()
+                });
+                app.showToast(localization.tr('bookmark_saved'), 'success');
+            }
+            
+            storage.set('quranBookmarks', bookmarks);
+        }
+
+        
+        function loadBookmarks() {
+            const bookmarks = getBookmarks();
+            const bookmarksSection = document.getElementById('bookmarks-section');
+            const bookmarksList = document.getElementById('bookmarks-list');
+            
+            if (bookmarks.length === 0) {
+                bookmarksSection.style.display = 'none';
+                return;
+            }
+            
+            bookmarksSection.style.display = 'block';
+            bookmarksList.innerHTML = bookmarks.map(b => `
+                <div class="list-item" onclick="openSurahAtAyah(${b.surahNumber}, ${b.ayahIndex})">
+                    <div class="item-number">⭐</div>
+                    <div class="item-text">
+                        <div class="item-title">${b.surahName}</div>
+                        <div class="item-subtitle">${localization.tr('verse')} ${b.verseNumber}</div>
+                    </div>
+                    <button class="btn btn-icon" onclick="event.stopPropagation(); removeBookmark('${b.id}')" title="${localization.tr('delete')}">🗑️</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeBookmark(id) {
+            let bookmarks = getBookmarks();
+            bookmarks = bookmarks.filter(b => b.id !== id);
+            storage.set('quranBookmarks', bookmarks);
+            loadBookmarks();
+            app.showToast(localization.tr('bookmark_deleted'), 'info');
+        }
+        
+        async function openSurahAtAyah(surahNumber, ayahIndex) {
+            await openSurah(surahNumber);
+            
+            // Wait for DOM to update then scroll
+            setTimeout(() => {
+                const verseEl = document.getElementById(`verse-${ayahIndex}`);
+                if (verseEl) {
+                    verseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    verseEl.style.background = 'rgba(12, 121, 54, 0.1)';
+                    setTimeout(() => verseEl.style.background = '', 2000);
+                }
+            }, 300);
+        }
+        
+        function backToList() {
+            stopAudio();
+            document.getElementById('surah-content').style.display = 'none';
+            document.getElementById('surah-list').style.display = 'block';
+            checkLastRead();
+            loadBookmarks();
+        }
+        
+        function checkLastRead() {
+            const lastSurah = storage.lastReadSurah;
+            const lastSurahName = storage.get('lastReadSurahName', '');
+            const lastAyah = storage.get('lastReadAyah', 0);
+            
+            if (lastSurah) {
+                document.getElementById('last-read-card').style.display = 'block';
+                const ayahText = lastAyah > 0 ? ` - ${localization.tr('verse')} ${lastAyah + 1}` : '';
+                document.getElementById('last-read-surah').textContent = (lastSurahName || `سورة رقم ${lastSurah}`) + ayahText;
+            }
+        }
+        
+        function continueReading() {
+            const lastSurah = storage.lastReadSurah;
+            const lastAyah = storage.get('lastReadAyah', 0);
+            if (lastSurah) {
+                openSurahAtAyah(lastSurah, lastAyah);
+            }
+        }
+    </script>
+</body>
+</html>
+

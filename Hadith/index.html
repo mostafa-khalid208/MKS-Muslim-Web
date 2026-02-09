@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - الأحاديث النبوية">
+    <title>MKS Muslim - الأحاديث</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item active"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="hadith">الأحاديث النبوية</h1>
+            </div>
+            
+            <!-- Collection Selection -->
+            <div class="nav-pills fade-in">
+                <button class="nav-pill" onclick="setCollection('bukhari')" id="btn-bukhari">
+                    <span>📗</span>
+                    <span data-i18n="bukhari">صحيح البخاري</span>
+                </button>
+                <button class="nav-pill" onclick="setCollection('muslim')" id="btn-muslim" style="opacity: 0.7;">
+                    <span>📕</span>
+                    <span data-i18n="muslim">صحيح مسلم</span>
+                </button>
+            </div>
+            
+            <!-- Search -->
+            <div class="card fade-in" style="margin-bottom: 20px;">
+                <div class="input-group">
+                    <div class="input-with-icon">
+                        <input type="number" class="input" id="hadith-number" data-i18n-placeholder="search_hadith" placeholder="ابحث عن حديث برقم" min="1">
+                        <div class="input-actions">
+                            <button class="input-action-btn" onclick="searchHadith()" title="Search">🔍</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="getRandomHadith()" style="width: 100%; margin-top: 12px;">
+                    <span>🎲</span>
+                    <span>حديث عشوائي</span>
+                </button>
+            </div>
+            
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display: none;"><div class="spinner"></div></div>
+            
+            <!-- Hadith Display -->
+            <div id="hadith-display"></div>
+            
+            <!-- Favorites -->
+            <div class="card fade-in" id="favorites-section" style="margin-top: 20px;">
+                <div class="card-header">
+                    <div class="card-icon primary">⭐</div>
+                    <div>
+                        <h3 class="card-title">الأحاديث المحفوظة</h3>
+                    </div>
+                </div>
+                <div id="favorites-list"></div>
+            </div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        let currentCollection = 'bukhari';
+        let currentHadithNumber = 1;
+        const ranges = { bukhari: 7000, muslim: 5000 };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFavorites();
+            getRandomHadith();
+            updateNotificationBtn();
+        });
+        
+        function setCollection(collection) {
+            currentCollection = collection;
+            document.getElementById('btn-bukhari').style.opacity = collection === 'bukhari' ? '1' : '0.7';
+            document.getElementById('btn-muslim').style.opacity = collection === 'muslim' ? '1' : '0.7';
+            // Reset or keep number? Let's keep number but it might be out of range or different hadith.
+            // Better to load random or 1.
+            getRandomHadith(); 
+        }
+        
+        async function searchHadith() {
+            const val = document.getElementById('hadith-number').value;
+            if (!val) {
+                app.showToast(localization.tr('enter_valid_number') || 'Enter a number', 'error');
+                return;
+            }
+            currentHadithNumber = parseInt(val);
+            await loadHadith(currentCollection, currentHadithNumber);
+        }
+        
+        async function getRandomHadith() {
+            const max = ranges[currentCollection];
+            const rand = Math.floor(Math.random() * max) + 1;
+            currentHadithNumber = rand;
+            document.getElementById('hadith-number').value = rand;
+            await loadHadith(currentCollection, rand);
+        }
+        
+        function nextHadith() {
+            currentHadithNumber++;
+            document.getElementById('hadith-number').value = currentHadithNumber;
+            loadHadith(currentCollection, currentHadithNumber);
+        }
+        
+        function prevHadith() {
+            if (currentHadithNumber > 1) {
+                currentHadithNumber--;
+                document.getElementById('hadith-number').value = currentHadithNumber;
+                loadHadith(currentCollection, currentHadithNumber);
+            }
+        }
+        
+        // Notifications
+        function toggleHadithNotification() {
+            const current = storage.get('hadith_notification', false);
+            storage.set('hadith_notification', !current);
+            updateNotificationBtn();
+            
+            if (!current) {
+                notifications.scheduleDailyHadith();
+                app.showToast(localization.tr('notifications_enabled') || 'Notifications Enabled', 'success');
+            } else {
+                // Logic to cancel? notifications.js might need 'cancel'. 
+                // For now, assume enabling schedules it. Disabling just stops future/ui.
+                app.showToast(localization.tr('notifications_disabled') || 'Notifications Disabled', 'info');
+            }
+        }
+        
+        function updateNotificationBtn() {
+            const btn = document.getElementById('notify-btn');
+            if (!btn) return;
+            const enabled = storage.get('hadith_notification', false);
+            btn.innerHTML = enabled ? '🔔' : '🔕';
+            btn.style.opacity = enabled ? '1' : '0.5';
+        }
+
+        async function loadHadith(collection, number) {
+            const loading = document.getElementById('loading');
+            if(loading) loading.style.display = 'flex';
+            const display = document.getElementById('hadith-display');
+            if(display) display.innerHTML = '';
+            
+            try {
+                const data = await api.getHadith(collection, number);
+                displayHadith(data, collection, number);
+            } catch (error) {
+                console.error('Error loading hadith:', error);
+                if(display) {
+                    display.innerHTML = `
+                        <div class="card">
+                            <div class="empty-state">
+                                <div class="empty-icon">⚠️</div>
+                                <div class="empty-text">${localization.isArabic ? 'الحديث غير موجود أو حدث خطأ' : 'Hadith not found'}</div>
+                                <button class="btn btn-primary" onclick="getRandomHadith()" style="margin-top:10px;">${localization.isArabic ? 'حاول مرة أخرى' : 'Try Again'}</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } finally {
+                if(loading) loading.style.display = 'none';
+            }
+        }
+        
+        function displayHadith(data, collection, number) {
+            const isArabic = localization.isArabic;
+            const isFavorite = storage.isHadithFavorite(collection, number);
+            
+            const hadithText = data.hadiths?.[0]?.text || data.text || '...';
+            
+            const container = document.getElementById('hadith-display');
+            if(!container) return;
+            
+            container.innerHTML = `
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon primary">📜</div>
+                        <div>
+                            <h3 class="card-title">${isArabic ? (collection === 'bukhari' ? 'صحيح البخاري' : 'صحيح مسلم') : (collection === 'bukhari' ? 'Sahih Bukhari' : 'Sahih Muslim')}</h3>
+                            <p class="card-subtitle">${isArabic ? 'حديث رقم' : 'Hadith #'} ${number}</p>
+                        </div>
+                        <button id="notify-btn" onclick="toggleHadithNotification()" class="btn-icon" style="margin-right: auto; margin-left: 0;">🔕</button>
+                    </div>
+                    <!-- Bismillah Header -->
+                    <div style="text-align: center; margin: 16px 0; padding: 16px; background: linear-gradient(135deg, rgba(12, 121, 54, 0.1), rgba(12, 121, 54, 0.05)); border-radius: 8px;">
+                        <div style="font-family: 'Traditional Arabic', serif; font-size: 2rem; color: var(--primary);">  الحديث </div>
+                    </div>
+                    <div style="line-height: 2.2; font-size: 1.2rem; padding: 16px 0; border-top: 1px solid var(--surface); text-align: justify;">
+                        ${hadithText}
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+                        <button class="btn ${isFavorite ? 'btn-primary' : 'btn-outline'}" onclick="toggleFavorite('${collection}', ${number}, '${hadithText.substring(0, 50).replace(/'/g, "\\'")}')">
+                            <span>${isFavorite ? '⭐' : '☆'}</span>
+                            <span>${isFavorite ? (isArabic ? 'محفوظ' : 'Saved') : (isArabic ? 'حفظ' : 'Save')}</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareHadith('${hadithText.replace(/'/g, "\\'")}')">
+                            <span>📤</span>
+                            <span>${isArabic ? 'مشاركة' : 'Share'}</span>
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center; border-top: 1px solid var(--border); padding-top: 16px;">
+                        <button class="btn btn-outline" onclick="nextHadith()" title="Next">➡️</button>
+                         <span style="align-self: center; font-weight: bold;">${number}</span>
+                        <button class="btn btn-outline" onclick="prevHadith()" title="Previous">⬅️</button>
+                    </div>
+                </div>
+            `;
+            updateNotificationBtn();
+        }
+        
+        function toggleFavorite(collection, number, preview) {
+            if (storage.isHadithFavorite(collection, number)) {
+                storage.removeHadithFavorite(collection, number);
+                app.showToast(localization.isArabic ? 'تم الحذف' : 'Removed', 'info');
+            } else {
+                storage.addHadithFavorite({ collection, number, preview });
+                app.showToast(localization.isArabic ? 'تم الحفظ' : 'Saved', 'success');
+            }
+            loadFavorites();
+            // Refresh logic to keep state? Just re-render.
+            loadHadith(collection, number); 
+        }
+        
+        function loadFavorites() {
+            const favorites = storage.hadithFavorites;
+            const list = document.getElementById('favorites-list');
+            if(!list) return;
+            
+            if (favorites.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">' + (localization.isArabic ? 'لا توجد أحاديث محفوظة' : 'No saved hadiths') + '</div>';
+                return;
+            }
+            
+            list.innerHTML = favorites.slice(0, 5).map(fav => `
+                <div class="list-item" onclick="loadHadith('${fav.collection}', ${fav.number})">
+                    <div class="item-number">📜</div>
+                    <div class="item-text">
+                        <div class="item-title">${fav.collection === 'bukhari' ? (localization.isArabic ? 'البخاري' : 'Bukhari') : (localization.isArabic ? 'مسلم' : 'Muslim')} #${fav.number}</div>
+                        <div class="item-subtitle">${fav.preview ? fav.preview.substring(0, 40) + '...' : ''}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function shareHadith(text) {
+            if (navigator.share) {
+                navigator.share({ title: 'MKS Muslim Hadith', text: text });
+            } else {
+                navigator.clipboard.writeText(text)
+                    .then(() => app.showToast(localization.isArabic ? 'تم النسخ' : 'Copied', 'success'))
+                    .catch(() => app.showToast('Error', 'error'));
+            }
+        }
+
+        async function searchHadith() {
+            const val = document.getElementById('hadith-number').value;
+            if (!val) return;
+            currentHadithNumber = parseInt(val);
+            loadHadith(currentCollection, currentHadithNumber);
+        }
+
+        async function getRandomHadith() {
+            const max = ranges[currentCollection];
+            const rand = Math.floor(Math.random() * max) + 1;
+            currentHadithNumber = rand;
+            document.getElementById('hadith-number').value = rand;
+            loadHadith(currentCollection, rand);
+        }
+        
+        function nextHadith() {
+            currentHadithNumber++;
+            document.getElementById('hadith-number').value = currentHadithNumber;
+            loadHadith(currentCollection, currentHadithNumber);
+        }
+        
+        function prevHadith() {
+            if (currentHadithNumber > 1) {
+                currentHadithNumber--;
+                document.getElementById('hadith-number').value = currentHadithNumber;
+                loadHadith(currentCollection, currentHadithNumber);
+            }
+        }
+
+        document.getElementById('hadith-number').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchHadith();
+        });
+    </script>
+</body>
+</html>

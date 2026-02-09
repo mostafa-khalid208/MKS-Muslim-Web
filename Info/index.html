@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <title>MKS Muslim - معلومات</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .info-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        .info-content h3 {
+            color: var(--primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--surface);
+            padding-bottom: 8px;
+        }
+        .info-content p {
+            margin-bottom: 16px;
+        }
+        .info-content ul {
+            margin-bottom: 16px;
+            padding-right: 20px;
+        }
+        .info-content li {
+            margin-bottom: 8px;
+        }
+        /* Dark Mode Support for Info Content */
+        [data-theme="dark"] #content-body h3,
+        [data-theme="dark"] #content-body h2,
+        [data-theme="dark"] #content-body strong {
+            color: #FFFFFF !important;
+        }
+        [data-theme="dark"] #content-body p,
+        [data-theme="dark"] #content-body li {
+            color: #B3B3B3 !important;
+        }
+        [data-theme="dark"] #content-body ul {
+            color: #B3B3B3 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="page-header fade-in">
+            <button class="btn btn-secondary" onclick="history.back()" style="margin-bottom: 0;">
+                <span>←</span>
+            </button>
+            <h1 class="page-title" id="page-title">...</h1>
+        </header>
+
+        <main class="main-content" style="padding-top: 20px;">
+            <div class="card fade-in">
+                <div class="info-content" id="content-body">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/islamic-content.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Load Theme immediately
+             if (window.app && window.app.loadTheme) {
+                 window.app.loadTheme();
+             } else if (window.storage && window.storage.theme) {
+                 document.documentElement.setAttribute('data-theme', window.storage.theme);
+             }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const contentId = urlParams.get('id');
+            const data = IslamicContentData && IslamicContentData.detailedContent ? IslamicContentData.detailedContent[contentId] : null;
+            
+            if (data) {
+                document.title = `MKS Muslim - ${data.title}`;
+                document.getElementById('page-title').textContent = data.title;
+                document.getElementById('content-body').innerHTML = data.content;
+            } else {
+                document.getElementById('content-body').innerHTML = `
+                    <div style="text-align: center; padding: 40px 0;">
+                        <p>عذراً، المحتوى غير متوفر.</p>
+                        <button class="btn btn-primary" onclick="history.back()">عودة</button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

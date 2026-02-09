@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - عن التطبيق">
+    <title>MKS Muslim - عن التطبيق</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item active"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="about_developer">السيرة الذاتية</h1>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading"><div class="spinner"></div></div>
+            
+            <!-- CV Iframe -->
+            <div class="iframe-container fade-in" id="cv-container" style="display: none; height: calc(100vh - 120px);">
+                <iframe 
+                    id="cv-iframe"
+                    src="https://mostafa-khalid208.github.io/My-CV-Communications-Electronics-Engineer/"
+                    title="Developer CV"
+                    onload="onIframeLoad()"
+                    style="width: 100%; height: 100%; border: none; border-radius: var(--radius-lg);"
+                ></iframe>
+            </div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        function onIframeLoad() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('cv-container').style.display = 'block';
+        }
+        
+        // Fallback timeout
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('cv-container').style.display = 'block';
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - السبحة الإلكترونية">
+    <title>MKS Muslim - تسبيح</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item active"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="digital_tasbih">السبحة الإلكترونية</h1>
+            </div>
+            
+            <!-- Bismillah Banner -->
+            <div class="card fade-in" style="margin-bottom: 24px; text-align: center; border-color: var(--primary); background: linear-gradient(135deg, rgba(12, 121, 54, 0.1), rgba(12, 121, 54, 0.02));">
+                <div style="font-family: 'Traditional Arabic', serif; font-size: 2.5rem; color: var(--primary);">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+            </div>
+
+            <!-- Navigation Pills -->
+            <div class="nav-pills fade-in">
+                <a href="../Tasbih-Phrases/" class="nav-pill">
+                    <span>📋</span>
+                    <span data-i18n="tasbih_phrases">جمل التسبيح</span>
+                </a>
+                <a href="../Azkar/" class="nav-pill">
+                    <span>☀️</span>
+                    <span data-i18n="morning_evening">أذكار الصباح والمساء</span>
+                </a>
+                <a href="../Supplications/" class="nav-pill">
+                    <span>💚</span>
+                    <span data-i18n="supplications">الأدعية</span>
+                </a>
+                <a href="../Tashahhud/" class="nav-pill">
+                    <span>☝️</span>
+                    <span data-i18n="tashahhud">التشهد</span>
+                </a>
+            </div>
+            
+            <!-- Tasbih Counter -->
+            <div class="tasbih-counter fade-in">
+                <div class="counter-circle" id="counter-circle" onclick="incrementCounter()">
+                    <div class="counter-number" id="counter-number">0</div>
+                    <div class="counter-label" data-i18n="tap_to_count">اضغط للعد</div>
+                </div>
+                
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="resetCounter()">
+                        <span>🔄</span>
+                        <span data-i18n="reset_counter">تصفير</span>
+                    </button>
+                    <button class="btn btn-outline" onclick="setTarget()">
+                        <span>🎯</span>
+                        <span id="target-label">33</span>
+                    </button>
+                </div>
+                
+                <!-- Controls -->
+                <div class="tasbih-controls flash-in" style="margin-top: 24px; display: flex; justify-content: center; gap: 16px; align-items: center;">
+                    <div class="control-group">
+                        <label data-i18n="target" style="color: var(--text-secondary); font-size: 0.9rem;">الهدف</label>
+                        <select id="target-select" onchange="setTarget(this.value)" style="padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text-primary);">
+                            <option value="33">33</option>
+                            <option value="100">100</option>
+                            <option value="unlimited" data-i18n="unlimited">مفتوح</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label data-i18n="cycle" style="color: var(--text-secondary); font-size: 0.9rem;">الدورة</label>
+                        <div id="cycle-count" style="font-weight: bold; color: var(--primary);">0</div>
+                    </div>
+                    <div class="control-group">
+                         <button onclick="resetCounter()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🔄</button>
+                    </div>
+                </div>
+
+                <div id="progress-info" style="margin-top: 12px; text-align: center; color: var(--text-secondary); font-size: 0.85rem;"></div>
+            </div>
+            
+            <!-- Tasbih Phrases -->
+            <div class="card fade-in" style="margin-top: 20px;">
+                <h3 style="color: var(--primary); margin-bottom: 16px;">التسبيحات الشائعة</h3>
+                <div id="tasbih-phrases">
+                    <div class="list-item" onclick="selectPhrase('سبحان الله')">
+                        <div class="item-number">📿</div>
+                        <div class="item-text">
+                            <div class="item-title">سبحان الله</div>
+                            <div class="item-subtitle">SubhanAllah</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="selectPhrase('الحمد لله')">
+                        <div class="item-number">📿</div>
+                        <div class="item-text">
+                            <div class="item-title">الحمد لله</div>
+                            <div class="item-subtitle">Alhamdulillah</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="selectPhrase('الله أكبر')">
+                        <div class="item-number">📿</div>
+                        <div class="item-text">
+                            <div class="item-title">الله أكبر</div>
+                            <div class="item-subtitle">Allahu Akbar</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="selectPhrase('لا إله إلا الله')">
+                        <div class="item-number">📿</div>
+                        <div class="item-text">
+                            <div class="item-title">لا إله إلا الله</div>
+                            <div class="item-subtitle">La ilaha illallah</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="selectPhrase('أستغفر الله')">
+                        <div class="item-number">📿</div>
+                        <div class="item-text">
+                            <div class="item-title">أستغفر الله</div>
+                            <div class="item-subtitle">Astaghfirullah</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        let count = 0;
+        let target = 33; // value or 'unlimited'
+        let cycle = 0;
+        let selectedPhrase = 'سبحان الله';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+             // Load saved state
+             count = parseInt(storage.get('tasbihCount', 0));
+             cycle = parseInt(storage.get('tasbihCycle', 0));
+             selectedPhrase = storage.get('tasbihPhrase', 'سبحان الله');
+             
+             // Handle stored target which might be string 'unlimited' or number
+             const savedTarget = storage.get('tasbihTarget', '33');
+             // Update UI selector
+             const selectEl = document.getElementById('target-select');
+             if (selectEl) {
+                 selectEl.value = savedTarget;
+             }
+             setTarget(savedTarget, false); // Initialize target variable
+             
+             updateDisplay();
+        });
+        
+        function setTarget(val, reset = true) {
+             console.log("Setting target to:", val);
+             target = val === 'unlimited' ? 'unlimited' : parseInt(val);
+             storage.set('tasbihTarget', val);
+             
+             // Update Label if exists
+             const label = document.getElementById('target-label');
+             if (label) label.textContent = target === 'unlimited' ? '∞' : target;
+
+             if (reset) {
+                 count = 0;
+                 // Don't reset cycle on target change typically
+                 storage.tasbihCount = 0;
+                 updateDisplay();
+             }
+        }
+
+        function incrementCounter() {
+             count++;
+             
+             // Pulse Animation Refined
+             const circle = document.getElementById('counter-circle');
+             if (circle) {
+                 // Force reflow
+                 circle.classList.remove('pulse-animation');
+                 void circle.offsetWidth; 
+                 circle.classList.add('pulse-animation');
+             }
+             
+             // Vibrate
+             if (navigator.vibrate) navigator.vibrate(40);
+             
+             // Check Target
+             if (target !== 'unlimited' && count >= target) {
+                 cycle++;
+                 count = 0;
+                 storage.set('tasbihCycle', cycle);
+                 storage.tasbihCount = 0; // Reset count
+                 
+                 if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                 app.showToast(localization.tr('cycle_completed') || 'Completed', 'success');
+             } else {
+                 storage.tasbihCount = count;
+             }
+             
+             updateDisplay();
+        }
+        
+        function resetCounter() {
+            if (confirm(localization.tr('reset_confirm') || 'Reset counter?')) {
+                count = 0;
+                cycle = 0;
+                storage.tasbihCount = 0;
+                storage.set('tasbihCycle', 0);
+                updateDisplay();
+            }
+        }
+        
+        function selectPhrase(phrase) {
+            selectedPhrase = phrase;
+            storage.set('tasbihPhrase', phrase);
+            updateDisplay();
+            app.showToast(phrase, 'info');
+        }
+        
+        function updateDisplay() {
+            // Count
+            const countEl = document.getElementById('counter-value'); 
+            if (countEl) countEl.textContent = count;
+            
+            // Old UI elements might default if not found
+            const numEl = document.getElementById('counter-number');
+            if (numEl) numEl.textContent = count;
+
+            const phraseEl = document.getElementById('current-phrase');
+            if (phraseEl) phraseEl.textContent = selectedPhrase;
+            
+            const cycleEl = document.getElementById('cycle-count');
+            if (cycleEl) cycleEl.textContent = cycle;
+            
+            // Progress Ring
+            const circle = document.querySelector('.progress-ring__circle');
+            if (circle) {
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                
+                let percent = 0;
+                if (target === 'unlimited') {
+                    percent = (count % 100) / 100; // Visual loop
+                } else {
+                    percent = count / target;
+                }
+                const offset = circumference - percent * circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+            
+            // Info Text
+            const progressInfo = document.getElementById('progress-info');
+            if (progressInfo) {
+                const isArabic = localization.isArabic;
+                const tText = target === 'unlimited' ? '∞' : target;
+                progressInfo.textContent = `${count} / ${tText}`;
+            }
+        }
+
+        
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                e.preventDefault();
+                incrementCounter();
+            }
+        });
+    </script>
+</body>
+</html>

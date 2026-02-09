@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - أذكار الصباح والمساء">
+    <title>MKS Muslim - الأذكار</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">🕌</div>
+                    <button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text">الصلاة</span></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text">القرآن</span></a>
+                <a href="../Tasbih/" class="nav-item active"><div class="nav-icon">📿</div><span class="nav-text">تسبيح</span></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text">المهام</span></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text">ثقافة</span></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text">الأحاديث</span></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text">البوصلة</span></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text">الإعدادات</span></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text">عن التطبيق</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title">أذكار الصباح والمساء</h1>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="nav-pills fade-in">
+                <a href="../Tasbih/" class="nav-pill"><span>📿</span><span>التسبيح</span></a>
+                <a href="../Supplications/" class="nav-pill"><span>💚</span><span>الأدعية</span></a>
+                <a href="../Tasbih-Phrases/" class="nav-pill"><span>📋</span><span>الجمل</span></a>
+            </div>
+            
+            <!-- Selector -->
+            <div class="card fade-in" style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary" onclick="showMorning()" id="btn-morning">☀️ أذكار الصباح</button>
+                    <button class="btn btn-secondary" onclick="showEvening()" id="btn-evening">🌙 أذكار المساء</button>
+                </div>
+            </div>
+            
+            <!-- Azkar List -->
+            <div id="azkar-list"></div>
+            
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/islamic-content.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/app.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 17) {
+                showMorning();
+            } else {
+                showEvening();
+            }
+        });
+        
+        function showMorning() {
+            document.getElementById('btn-morning').className = 'btn btn-primary';
+            document.getElementById('btn-evening').className = 'btn btn-secondary';
+            const azkar = IslamicContentData.azkar && IslamicContentData.azkar.morning ? IslamicContentData.azkar.morning : [];
+            renderAzkar(azkar, IslamicContentData.azkar.addon);
+        }
+        
+        function showEvening() {
+            document.getElementById('btn-morning').className = 'btn btn-secondary';
+            document.getElementById('btn-evening').className = 'btn btn-primary';
+            const azkar = IslamicContentData.azkar && IslamicContentData.azkar.evening ? IslamicContentData.azkar.evening : [];
+            renderAzkar(azkar, IslamicContentData.azkar.addon);
+        }
+        
+        function renderAzkar(azkar, addon) {
+            const list = document.getElementById('azkar-list');
+            let html = azkar.map((zikr, index) => `
+                <div class="card fade-in" style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <span style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.875rem;">
+                            ${zikr.count}x
+                        </span>
+                        <span style="color: var(--gold); font-size: 0.875rem;">📿</span>
+                    </div>
+                    <div style="font-size: 1.25rem; line-height: 2; margin-bottom: 12px; text-align: center;">
+                        ${zikr.text}
+                    </div>
+                    ${zikr.source ? `
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; text-align: center; padding-top: 12px; border-top: 1px solid var(--surface);">
+                        💫 ${zikr.source}
+                    </div>` : ''}
+                </div>
+            `).join('');
+
+            // Add Addon Content if available (Ayat Kursi, etc is in the list, but general info is in addon)
+            if (addon) {
+                html += `<div class="card fade-in" style="margin-top: 20px; background: rgba(12, 121, 54, 0.05); border: 1px solid rgba(12, 121, 54, 0.1);">
+                    ${addon}
+                </div>`;
+            }
+            
+            list.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

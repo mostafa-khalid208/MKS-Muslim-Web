@@ -1,0 +1,88 @@
+<<<<<<< HEAD
+{
+    "id": "mks-muslim-web-app",
+    "name": "MKS Muslim",
+    "short_name": "MKS Muslim",
+    "description": "تطبيق إسلامي شامل - Comprehensive Islamic App",
+    "start_url": "/MKS-Muslim-Web/index.html",
+    "display": "standalone",
+    "background_color": "#0c7936",
+    "theme_color": "#0c7936",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "assets/images/icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "assets/images/icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "categories": ["lifestyle", "education"],
+    "lang": "ar",
+    "dir": "rtl",
+    "scope": "/MKS-Muslim-Web/",
+    "screenshots": [],
+    "prefer_related_applications": false
+}
+=======
+{
+    "name": "MKS Muslim",
+    "short_name": "MKS",
+    "description": "تطبيق إسلامي شامل - Comprehensive Islamic App",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#0c7936",
+    "theme_color": "#0c7936",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "assets/images/My Logo Palestine.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/My Logo Palestine.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/My Logo Palestine.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "assets/images/My Logo Palestine.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "categories": ["lifestyle", "education"],
+    "lang": "ar",
+    "dir": "rtl",
+    "scope": "/",
+    "screenshots": [],
+    "prefer_related_applications": false
+}
+>>>>>>> d8e0d2b (first commit)

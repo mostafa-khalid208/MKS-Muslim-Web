@@ -1,0 +1,2104 @@
+/* ========================================
+   MKS Muslim Website - Main Stylesheet
+   ======================================== */
+
+/* CSS Variables - Light Theme (Default) */
+:root {
+    /* Primary Colors - Islamic Green */
+    --primary: #0c7936;
+    --primary-light: #4CAF50;
+    --primary-dark: #1B5E20;
+    --gradient-start: #0c7936;
+    --gradient-end: #1B5E20;
+    
+    /* Accent Colors */
+    --accent: #2E7D32;
+    --gold: #D4AF37;
+    --gold-light: #FFD700;
+    
+    /* Background Colors */
+    --background: #F5F7FA;
+    --card: #FFFFFF;
+    --surface: #FFFFFF;
+    
+    /* Text Colors */
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    
+    /* State Colors */
+    --success: #4CAF50;
+    --error: #D32F2F;
+    --warning: #FFA000;
+    --info: #1976D2;
+    
+    /* Shadows */
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.15);
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    
+    /* Transitions */
+    --transition-fast: 200ms ease;
+    --transition-medium: 350ms ease;
+    --transition-slow: 500ms ease;
+    
+    /* Sidebar Width */
+    --sidebar-width: 280px;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --background: #121212;
+    --card: #1E1E1E;
+    --surface: #2D2D2D;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --shadow: rgba(255, 255, 255, 0.05);
+    --shadow-lg: rgba(255, 255, 255, 0.08);
+}
+
+/* ========================================
+   Reset & Base Styles
+   ======================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background-color var(--transition-medium), color var(--transition-medium);
+    /* Security: Disable text selection for privacy */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* RTL Support */
+[dir="rtl"] body {
+    direction: rtl;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+
+p {
+    color: var(--text-secondary);
+}
+
+/* Basmalah Style */
+.basmalah {
+    font-family: 'Traditional Arabic', 'Amiri', serif;
+    font-size: 2rem;
+    color: var(--primary);
+    text-align: center;
+}
+
+/* ========================================
+   Layout - Main Structure
+   ======================================== */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 0;
+    transition: margin-left var(--transition-medium);
+    padding: 20px;
+    max-width: 100%;
+}
+
+[dir="rtl"] .main-content {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Ensure mobile content isn't hidden */
+@media (max-width: 767px) {
+    .main-content {
+        margin: 0 !important;
+        width: 100%;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        margin-left: var(--sidebar-width);
+    }
+    
+    [dir="rtl"] .main-content {
+        margin-left: 0;
+        margin-right: var(--sidebar-width);
+    }
+}
+
+/* ========================================
+   Sidebar Navigation
+   ======================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh; /* Restore 100vh for stability on both */
+    background: var(--card);
+    box-shadow: 2px 0 20px var(--shadow);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform var(--transition-medium);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Restore overflow hidden to contain children */
+}
+
+[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+    box-shadow: -2px 0 20px var(--shadow);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        transform: translateX(0);
+    }
+    
+    [dir="rtl"] .sidebar {
+        transform: translateX(0);
+    }
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    padding: 24px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+/* Sidebar Header Styles Restored */
+.sidebar-header .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.sidebar-header .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.sidebar-header .theme-toggle {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast);
+}
+
+.sidebar-header .theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-header .basmalah-text {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 8px;
+}
+
+.sidebar-header .app-name {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.sidebar-header .app-tagline {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto; /* Scroll ONLY the nav items */
+    padding: 16px 12px;
+    padding-bottom: 100px; 
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--surface);
+    flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    margin: 4px 0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+    position: relative; /* Ensure z-index works if needed */
+    z-index: 2;
+    text-decoration: none;
+}
+
+.nav-item:hover {
+    background: rgba(12, 121, 54, 0.1);
+}
+
+.nav-item.active {
+    background: rgba(12, 121, 54, 0.15);
+    border: 1px solid rgba(12, 121, 54, 0.3);
+}
+
+.nav-item .nav-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    transition: all var(--transition-fast);
+}
+
+.nav-item.active .nav-icon {
+    background: var(--primary);
+    color: white;
+}
+
+.nav-item .nav-text {
+    flex: 1;
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.nav-item.active .nav-text {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.nav-item .nav-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.nav-item.active .nav-indicator {
+    opacity: 1;
+}
+
+/* Sidebar Divider */
+.sidebar-divider {
+    height: 1px;
+    background: var(--surface);
+    margin: 16px 12px;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--surface);
+}
+
+.language-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.lang-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--surface);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all var(--transition-fast);
+}
+
+.lang-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.version-text {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+/* ========================================
+   Mobile Header
+   ======================================== */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--card);
+    box-shadow: 0 2px 10px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+@media (min-width: 768px) {
+    .mobile-header {
+        display: none;
+    }
+}
+
+/* Mobile Header */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Ensure full width */
+    box-sizing: border-box; /* Include padding in width */
+    padding: 16px;
+    background: var(--card); /* Should be white/card color, not green unless theme */
+    box-shadow: 0 2px 10px var(--shadow);
+    position: sticky; 
+    top: 0;
+    z-index: 900; /* Lower than sidebar (1000) but above content */
+}
+
+@media (min-width: 768px) {
+    .mobile-header {
+        display: none;
+    }
+}
+
+.hamburger-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--surface);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.5rem;
+    z-index: 101; /* Ensure clickable */
+}
+
+.mobile-header .app-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mobile-header .app-title .mks {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.mobile-header .app-title .muslim {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.mobile-header .theme-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--surface);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998; /* Below sidebar (1000) but above header (900) */
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-medium);
+}
+
+.sidebar-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (min-width: 768px) {
+    .sidebar-overlay {
+        display: none;
+    }
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+.card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all var(--transition-fast);
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.card-icon.primary {
+    background: rgba(12, 121, 54, 0.15);
+    color: var(--primary);
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Prayer Time Card
+   ======================================== */
+.prayer-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all var(--transition-fast);
+}
+
+.prayer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+}
+
+.prayer-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px var(--shadow-lg);
+}
+
+.prayer-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.prayer-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.prayer-time {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.prayer-card.current {
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.prayer-card.current::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+[dir="rtl"] .prayer-card.current::after {
+    right: auto;
+    left: 8px;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    box-shadow: 0 4px 15px rgba(12, 121, 54, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(12, 121, 54, 0.4);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--surface);
+}
+
+.btn-secondary:hover {
+    background: var(--background);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-icon {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+}
+
+/* ========================================
+   Form Elements
+   ======================================== */
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 2px solid var(--surface);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(12, 121, 54, 0.1);
+}
+
+.input::placeholder {
+    color: var(--text-secondary);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon .input {
+    padding-right: 100px;
+}
+
+[dir="rtl"] .input-with-icon .input {
+    padding-right: 16px;
+    padding-left: 100px;
+}
+
+.input-actions {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 4px;
+}
+
+[dir="rtl"] .input-actions {
+    right: auto;
+    left: 8px;
+}
+
+.input-action-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    transition: all var(--transition-fast);
+}
+
+.input-action-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* ========================================
+   Toggle Switch
+   ======================================== */
+.toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--surface);
+    border-radius: 28px;
+    transition: var(--transition-fast);
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: var(--transition-fast);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle input:checked + .toggle-slider {
+    background-color: var(--primary);
+}
+
+.toggle input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+}
+
+/* ========================================
+   Page Header
+   ======================================== */
+.page-header {
+    background: linear-gradient(135deg, rgba(12, 121, 54, 0.15), rgba(12, 121, 54, 0.05));
+    border: 1px solid rgba(12, 121, 54, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.page-header .basmalah {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.page-header .page-title {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* ========================================
+   Prayer Times Grid
+   ======================================== */
+.prayer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* ========================================
+   Date Display
+   ======================================== */
+.date-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.date-card {
+    background: var(--card);
+    border-radius: var(--radius-md);
+    padding: 16px 24px;
+    box-shadow: 0 2px 10px var(--shadow);
+    text-align: center;
+    min-width: 200px;
+}
+
+.date-card .date-label {
+    font-size: 0.75rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.date-card .date-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.date-card .date-weekday {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* ========================================
+   Tasbih Counter
+   ======================================== */
+.tasbih-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.counter-circle {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 10px 40px rgba(12, 121, 54, 0.4);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.counter-circle::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+.counter-circle:active {
+    transform: scale(0.95);
+}
+
+.counter-number {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.counter-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 8px;
+}
+
+/* ========================================
+   Loading States
+   ======================================== */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--surface);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--card) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+.fade-in {
+    animation: fadeIn var(--transition-medium);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+    animation: slideIn var(--transition-medium);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+[dir="rtl"] .slide-in {
+    animation: slideInRtl var(--transition-medium);
+}
+
+@keyframes slideInRtl {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Staggered animation for lists */
+.stagger-item:nth-child(1) { animation-delay: 50ms; }
+.stagger-item:nth-child(2) { animation-delay: 100ms; }
+.stagger-item:nth-child(3) { animation-delay: 150ms; }
+.stagger-item:nth-child(4) { animation-delay: 200ms; }
+.stagger-item:nth-child(5) { animation-delay: 250ms; }
+.stagger-item:nth-child(6) { animation-delay: 300ms; }
+.stagger-item:nth-child(7) { animation-delay: 350ms; }
+.stagger-item:nth-child(8) { animation-delay: 400ms; }
+.stagger-item:nth-child(9) { animation-delay: 450ms; }
+.stagger-item:nth-child(10) { animation-delay: 500ms; }
+
+/* ========================================
+   Logo
+   ======================================== */
+.logo-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.logo-image {
+    max-width: 150px;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+/* ========================================
+   Settings List
+   ======================================== */
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.settings-item .item-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12, 121, 54, 0.15);
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-right: 16px;
+}
+
+[dir="rtl"] .settings-item .item-icon {
+    margin-right: 0;
+    margin-left: 16px;
+}
+
+.settings-item .item-content {
+    flex: 1;
+}
+
+.settings-item .item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.settings-item .item-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Qibla Compass
+   ======================================== */
+.compass-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.compass {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: var(--card);
+    box-shadow: 0 10px 40px var(--shadow);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-medium);
+}
+
+.compass::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 3px solid var(--surface);
+    border-radius: 50%;
+}
+
+.compass-needle {
+    position: absolute;
+    width: 4px;
+    height: 100px;
+    background: linear-gradient(to top, var(--error), var(--primary));
+    border-radius: 4px;
+    transform-origin: center bottom;
+    transition: transform var(--transition-medium);
+}
+
+.compass-kaaba {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.compass-direction {
+    position: absolute;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.compass-direction.n { top: 20px; }
+.compass-direction.e { right: 20px; }
+.compass-direction.s { bottom: 20px; }
+.compass-direction.w { left: 20px; }
+
+/* ========================================
+   Iframe Container
+   ======================================== */
+.iframe-container {
+    width: 100%;
+    height: calc(100vh - 200px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+.iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.page-footer {
+    background: var(--card);
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 -2px 10px var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.footer-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.footer-text .developed-by {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.footer-text .developer-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ========================================
+   Install PWA Banner
+   ======================================== */
+.install-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    box-shadow: 0 10px 40px var(--shadow-lg);
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    animation: slideUp var(--transition-medium);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.install-banner.show {
+    display: flex;
+}
+
+.install-banner .banner-text {
+    flex: 1;
+}
+
+.install-banner .banner-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.install-banner .banner-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.install-banner .close-btn {
+    width: 32px;
+    height: 32px;
+    background: var(--surface);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 12px;
+}
+
+/* ========================================
+   Responsive Utilities
+   ======================================== */
+@media (max-width: 768px) {
+    .hide-mobile { display: none !important; }
+    
+    .main-content {
+        padding: 12px;
+    }
+    
+    .prayer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 768px) {
+    .hide-desktop { display: none !important; }
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ========================================
+   Navigation Pills (Horizontal Scroll)
+   ======================================== */
+.nav-pills {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 0;
+    margin-bottom: 20px;
+    scrollbar-width: none;
+}
+
+.nav-pills::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: var(--radius-lg);
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(12, 121, 54, 0.3);
+    transition: all var(--transition-fast);
+}
+
+.nav-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(12, 121, 54, 0.4);
+}
+
+/* ========================================
+   List Items
+   ======================================== */
+.list-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: var(--card);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    box-shadow: 0 2px 10px var(--shadow);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.list-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+[dir="rtl"] .list-item:hover {
+    transform: translateX(-4px);
+}
+
+.list-item .item-number {
+    width: 40px;
+    height: 40px;
+    background: rgba(12, 121, 54, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-weight: 600;
+    margin-right: 16px;
+}
+
+[dir="rtl"] .list-item .item-number {
+    margin-right: 0;
+    margin-left: 16px;
+}
+
+.list-item .item-text {
+    flex: 1;
+}
+
+.list-item .item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.list-item .item-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.list-item .item-arrow {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Badge
+   ======================================== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(12, 121, 54, 0.15);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge.gold {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+}
+
+/* ========================================
+   Empty State
+   ======================================== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-state .empty-icon {
+    font-size: 4rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.empty-state .empty-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* ========================================
+   Toast Notification
+   ======================================== */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card);
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2000;
+    opacity: 0;
+    transition: all var(--transition-medium);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error { border-left: 4px solid var(--error); }
+.toast.info { border-left: 4px solid var(--info); }
+
+/* ========================================
+   Countdown Timer
+   ======================================== */
+.next-prayer-card {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: var(--radius-xl);
+    margin-bottom: 20px;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 50px;
+}
+
+.countdown-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+}
+
+.countdown-label {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.countdown-separator {
+    font-size: 2rem;
+    font-weight: 700;
+    opacity: 0.8;
+    line-height: 1;
+    padding-top: 4px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* ========================================
+   Adhan Toggle Button
+   ======================================== */
+.adhan-toggle-btn {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(4px);
+}
+
+[dir="rtl"] .adhan-toggle-btn {
+    left: auto;
+    right: 8px;
+}
+
+.adhan-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.1);
+}
+
+.adhan-toggle-btn.active {
+    background: rgba(255, 215, 0, 0.35);
+}
+
+.adhan-toggle-btn.active .adhan-icon {
+    animation: ring 0.5s ease;
+}
+
+@keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    50% { transform: rotate(-15deg); }
+    75% { transform: rotate(10deg); }
+}
+
+/* Prayer card with Adhan button */
+.prayer-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ========================================
+   Sunnah Prayers Section
+   ======================================== */
+.sunnah-header {
+    padding: 0;
+}
+
+.sunnah-item {
+    background: var(--surface);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.sunnah-icon {
+    font-size: 1.25rem;
+}
+
+.sunnah-text {
+    flex: 1;
+}
+
+.sunnah-title {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.sunnah-count {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Audio Player Styles (for Quran page)
+   ======================================== */
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-top: 16px;
+}
+
+.audio-player-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.audio-player-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.audio-player-btn.playing {
+    animation: pulse 1.5s infinite;
+}
+
+.audio-progress {
+    flex: 1;
+    height: 6px;
+    background: rgba(12, 121, 54, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.audio-progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Play Full Surah Button */
+.play-surah-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    margin-bottom: 16px;
+}
+
+.play-surah-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(12, 121, 54, 0.4);
+}
+
+.play-surah-btn.playing {
+    background: linear-gradient(135deg, #D32F2F, #B71C1C);
+}
+
+/* Verse with audio button */
+.verse-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--card);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    transition: all var(--transition-fast);
+}
+
+.verse-item:hover {
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.verse-number {
+    min-width: 36px;
+    height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.verse-text {
+    flex: 1;
+    font-size: 1.25rem;
+    line-height: 2;
+    font-family: 'Traditional Arabic', 'Amiri', serif;
+    text-align: justify;
+}
+
+.verse-audio-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(12, 121, 54, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.verse-audio-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.verse-audio-btn.playing {
+    background: var(--primary);
+    color: white;
+    animation: pulse 1.5s infinite;
+}
+
+/* Bookmark Button */
+.bookmark-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: all var(--transition-fast);
+}
+
+.bookmark-btn:hover {
+    color: var(--gold);
+}
+
+.bookmark-btn.active {
+    color: var(--gold);
+}
+
+/* Last Read Card */
+.last-read-card {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.last-read-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(12, 121, 54, 0.4);
+}
+
+.last-read-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.last-read-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.last-read-surah {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.last-read-verse {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+
+/* ========================================
+   Modal & Info Button
+   ======================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.visible {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: var(--card);
+    margin: auto;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 4px 20px var(--shadow-lg);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: var(--text-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+}
+
+[dir='rtl'] .close-modal {
+    left: 16px;
+    right: auto;
+}
+
+.close-modal:hover {
+    color: var(--error);
+}
+
+#modal-title {
+    margin-bottom: 16px;
+    color: var(--primary);
+    border-bottom: 2px solid rgba(12,121,54,0.1);
+    padding-bottom: 8px;
+    padding-left: 30px; /* Space for close button */
+}
+
+[dir='rtl'] #modal-title {
+    padding-left: 0;
+    padding-right: 30px;
+}
+
+#modal-body {
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+/* Info Button */
+.info-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-inline-start: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.info-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+
+/* ========================================
+   Quran Inline Layout
+   ======================================== */
+.quran-container {
+    text-align: justify;
+    direction: rtl; /* Ensure Arabic flow */
+    font-family: 'Traditional Arabic', 'Amiri', serif;
+    font-size: 1.8rem; /* Larger for readability */
+    line-height: 2.5;
+    padding: 10px;
+}
+
+.verse {
+    display: inline;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 2px 0;
+    transition: background-color 0.2s;
+}
+
+.verse.active {
+    background-color: rgba(12, 121, 54, 0.15);
+}
+
+.verse:hover {
+    background-color: rgba(12, 121, 54, 0.05);
+}
+
+.verse-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    font-size: 0.9rem;
+    color: var(--primary);
+    margin: 0 6px;
+    vertical-align: middle;
+    font-family: sans-serif; /* Clear number font */
+}
+
+/* Quran Bottom Sheet / Options Bar */
+.verse-options-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--card);
+    box-shadow: 0 -4px 20px var(--shadow-lg);
+    padding: 16px;
+    display: none; /* Flex when active */
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.verse-options-bar.visible {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.verse-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.verse-option-btn .icon {
+    font-size: 1.5rem;
+    background: var(--surface);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.verse-option-btn.active .icon {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* Pulse Animation for Tasbih */
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    50% { transform: scale(0.97); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+.pulse-animation {
+    animation: pulse 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   Splash Screen
+   ======================================== */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #F5F7FA, #F5FFF5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+[data-theme="dark"] .splash-screen {
+    background: linear-gradient(180deg, #121212, #1a1a1a);
+}
+
+.splash-logo {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 30px;
+    animation: fadeScale 1.5s ease-out forwards;
+    opacity: 0;
+}
+
+.splash-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 50px;
+    animation: slideFade 1s ease-out 0.5s forwards;
+    opacity: 0;
+    transform: translateX(50px);
+}
+
+[dir="ltr"] .splash-title {
+    letter-spacing: 1.5px;
+}
+
+.splash-loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(12, 121, 54, 0.2);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite, fadeIn 1s ease-out 1s forwards;
+    opacity: 0;
+}
+
+.splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes fadeScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideFade {
+    0% { opacity: 0; transform: translateX(50px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+ [dir="rtl"] .splash-title {
+     /* RTL specific adjustments if needed */
+     transform: none; 
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

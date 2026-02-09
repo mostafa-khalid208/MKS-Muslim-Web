@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - تطبيق إسلامي شامل لمواقيت الصلاة">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>MKS Muslim - مواقيت الصلاة</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="apple-touch-icon" href="assets/images/icon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                <img src="assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            
+            <!-- Navigation Items -->
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active">
+                    <div class="nav-icon">🕐</div>
+                    <span class="nav-text" data-i18n="nav_prayer">الصلاة</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Quran/" class="nav-item">
+                    <div class="nav-icon">📖</div>
+                    <span class="nav-text" data-i18n="nav_quran">القرآن</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Tasbih/" class="nav-item">
+                    <div class="nav-icon">📿</div>
+                    <span class="nav-text" data-i18n="nav_tasbih">تسبيح</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Tasks/" class="nav-item">
+                    <div class="nav-icon">✅</div>
+                    <span class="nav-text" data-i18n="nav_tasks">المهام</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Culture/" class="nav-item">
+                    <div class="nav-icon">📚</div>
+                    <span class="nav-text" data-i18n="nav_culture">ثقافة</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Hadith/" class="nav-item">
+                    <div class="nav-icon">📜</div>
+                    <span class="nav-text" data-i18n="nav_hadith">الأحاديث</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Qibla/" class="nav-item">
+                    <div class="nav-icon">🧭</div>
+                    <span class="nav-text" data-i18n="nav_qibla">البوصلة</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                
+                <div class="sidebar-divider"></div>
+                
+                <a href="Settings/" class="nav-item">
+                    <div class="nav-icon">⚙️</div>
+                    <span class="nav-text" data-i18n="nav_settings">الإعدادات</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="About/" class="nav-item">
+                    <div class="nav-icon">ℹ️</div>
+                    <span class="nav-text" data-i18n="nav_about">عن التطبيق</span>
+                    <div class="nav-indicator"></div>
+                </a>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.1</div>
+            </div>
+        </aside>
+        
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title">
+                    <span class="mks">MKS</span>
+                    <span class="muslim">Muslim</span>
+                </div>
+                <button class="theme-btn" onclick="toggleTheme()">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </header>
+            
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <h1 class="page-title" data-i18n="prayer_times">مواقيت الصلاة</h1>
+            </div>
+            
+            <!-- Location Input -->
+            <div class="card fade-in" style="animation-delay: 100ms; margin-bottom: 20px;">
+                <div class="card-header">
+                    <div class="card-icon primary">📍</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="enter_city">أدخل المدينة</h3>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-with-icon">
+                        <input type="text" class="input" id="city-input" data-i18n-placeholder="enter_city" placeholder="أدخل اسم المدينة">
+                        <div class="input-actions">
+                            <button class="input-action-btn" onclick="getLocation()" title="Use GPS">📍</button>
+                            <button class="input-action-btn" onclick="searchPrayerTimes()" title="Search">🔍</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="input" id="country-input" data-i18n-placeholder="enter_country" placeholder="أدخل اسم الدولة">
+                </div>
+            </div>
+            
+            <!-- Date Display -->
+            <div class="date-display fade-in" style="animation-delay: 200ms;" id="date-display">
+                <div class="date-card">
+                    <div class="date-label" data-i18n="gregorian">الميلادي</div>
+                    <div class="date-value" id="gregorian-date">--</div>
+                    <div class="date-weekday" id="gregorian-weekday">--</div>
+                </div>
+                <div class="date-card">
+                    <div class="date-label" data-i18n="hijri">الهجري</div>
+                    <div class="date-value" id="hijri-date">--</div>
+                    <div class="date-weekday" id="hijri-weekday">--</div>
+                </div>
+            </div>
+            
+            <!-- Next Prayer Countdown -->
+            <div class="card fade-in next-prayer-card" style="animation-delay: 250ms; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; text-align: center; padding: 24px;">
+                <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;" data-i18n="next_prayer">الصلاة القادمة</div>
+                <div id="next-prayer-name" style="font-size: 2rem; font-weight: 700; margin-bottom: 12px;">--</div>
+                <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 8px;">
+                    <div class="countdown-unit">
+                        <div id="countdown-hours" class="countdown-value">00</div>
+                        <div class="countdown-label" data-i18n="hours">ساعة</div>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-unit">
+                        <div id="countdown-minutes" class="countdown-value">00</div>
+                        <div class="countdown-label" data-i18n="minutes">دقيقة</div>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-unit">
+                        <div id="countdown-seconds" class="countdown-value">00</div>
+                        <div class="countdown-label" data-i18n="seconds">ثانية</div>
+                    </div>
+                </div>
+                <div id="next-prayer-time" style="font-size: 1.1rem; opacity: 0.9;">--:--</div>
+            </div>
+            
+            <!-- Logo -->
+            <div class="logo-container fade-in" style="animation-delay: 250ms;">
+                <img src="assets/images/My Logo Palestine.png" alt="MKS Muslim Logo" class="logo-image">
+            </div>
+            
+            <!-- Loading State -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+            
+            <!-- Prayer Times Grid -->
+            <div class="prayer-grid" id="prayer-grid">
+                <!-- Prayer cards will be inserted here -->
+            </div>
+            
+            <!-- Adhan Test Button -->
+            <div class="card fade-in" style="margin-top: 20px;">
+                <div class="card-header">
+                    <div class="card-icon primary">🔊</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="adhan">الأذان</h3>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="testAdhan()">
+                        <span>▶️</span>
+                        <span data-i18n="test_adhan">تجربة الأذان</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="stopAdhan()">
+                        <span>⏹️</span>
+                        <span data-i18n="stop_adhan">إيقاف الأذان</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Sunnah Prayers Section -->
+            <div class="card fade-in" style="margin-top: 20px;" id="sunnah-section">
+                <div class="card-header">
+                    <div class="card-icon primary">🌙</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="sunnah_prayers">السنن الرواتب</h3>
+                    </div>
+                </div>
+                <div id="sunnah-times">
+                    <!-- Sunnah times will be inserted here -->
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="page-footer fade-in">
+                <div class="footer-icon">💚</div>
+                <div class="footer-text">
+                    <div class="developed-by" data-i18n="developed_by">تم التطوير بواسطة</div>
+                    <div class="developer-name">Eng. Mostafa Khalid Sallam</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- PWA Install Banner -->
+    <div class="install-banner" id="install-banner">
+        <div class="banner-text">
+            <div class="banner-title" data-i18n="pwa_install_title">تثبيت التطبيق</div>
+            <div class="banner-subtitle" data-i18n="pwa_install_message">ثبّت التطبيق على جهازك للوصول السريع</div>
+        </div>
+        <button class="btn btn-primary" onclick="installPWA()" data-i18n="install">تثبيت</button>
+        <button class="close-btn" onclick="hideInstallBanner()">✕</button>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Scripts -->
+    <script src="js/islamic-content.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/localization.js"></script>
+    <script src="js/islamic-content.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Prayer time images
+        const prayerImages = {
+            Fajr: 'assets/images/Fajr.png',
+            Sunrise: 'assets/images/Sunrise.jpg',
+            Dhuhr: 'assets/images/Dhuhr.webp',
+            Asr: 'assets/images/Asr.jpg',
+            Maghrib: 'assets/images/Maghrib.jpg',
+            Isha: 'assets/images/Isha.jpg',
+            Imsak: 'assets/images/Imsak.png',
+            Sunset: 'assets/images/Sunset.webp',
+            Midnight: 'assets/images/Midnight.png',
+            Firstthird: 'assets/images/Firstthird.png',
+            Lastthird: 'assets/images/Lastthird.png'
+        };
+        
+        // Prayer name translations
+        const prayerNames = {
+            Fajr: { ar: 'الفجر', en: 'Fajr' },
+            Sunrise: { ar: 'الشروق', en: 'Sunrise' },
+            Dhuhr: { ar: 'الظهر', en: 'Dhuhr' },
+            Asr: { ar: 'العصر', en: 'Asr' },
+            Maghrib: { ar: 'المغرب', en: 'Maghrib' },
+            Isha: { ar: 'العشاء', en: 'Isha' },
+            Imsak: { ar: 'الإمساك', en: 'Imsak' },
+            Sunset: { ar: 'الغروب', en: 'Sunset' },
+            Midnight: { ar: 'منتصف الليل', en: 'Midnight' },
+            Firstthird: { ar: 'الثلث الأول', en: 'First Third' },
+            Lastthird: { ar: 'الثلث الأخير', en: 'Last Third' }
+        };
+        
+        // Sunnah prayers info
+        const sunnahInfo = {
+            Fajr: { ar: 'ركعتان قبل الفجر', en: '2 Rak\'ahs before Fajr', count: 2 },
+            Dhuhr: { ar: '4 ركعات قبل و 2 بعد الظهر', en: '4 before & 2 after Dhuhr', count: 6 },
+            Asr: { ar: '4 ركعات قبل العصر', en: '4 Rak\'ahs before Asr', count: 4 },
+            Maghrib: { ar: 'ركعتان بعد المغرب', en: '2 Rak\'ahs after Maghrib', count: 2 },
+            Isha: { ar: 'ركعتان بعد العشاء + الوتر', en: '2 after Isha + Witr', count: 3 }
+        };
+        
+        // Main prayer order
+        const mainPrayers = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        const adhanPrayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        const additionalPrayers = ['Imsak', 'Sunset', 'Midnight', 'Firstthird', 'Lastthird'];
+        
+        // Global state
+        let currentTimings = null;
+        let countdownInterval = null;
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load saved location
+            const city = storage.lastCity;
+            const country = storage.lastCountry;
+            
+            if (city) document.getElementById('city-input').value = city;
+            if (country) document.getElementById('country-input').value = country;
+            
+            // Load Adhan settings
+            loadAdhanSettings();
+            
+            // Load prayer times
+            await loadPrayerTimes(city, country || 'Egypt');
+        });
+
+        // Show/Close Modal
+        function showInfoModal(title, content) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').innerHTML = content;
+            const modal = document.getElementById('info-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('visible'), 10);
+        }
+
+        function closeInfoModal() {
+            const modal = document.getElementById('info-modal');
+            modal.classList.remove('visible');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('info-modal');
+            if (event.target == modal) {
+                closeInfoModal();
+            }
+        }
+
+        // Show Prayer Info
+        function showPrayerInfo(prayer) {
+            const key = prayer.toLowerCase();
+            const data = IslamicContentData && IslamicContentData[key];
+            
+            // Default Title
+            const isArabic = localization.isArabic;
+            const title = data ? data.title : (isArabic ? prayerNames[prayer].ar : prayerNames[prayer].en);
+            
+            // Content
+            let content = "";
+            if (data && data.content) {
+                content = data.content;
+            } else {
+                // Fallback
+                content = `<div class="info-section"><p>${isArabic ? 'معلومات الصلاة غير متوفرة حالياً' : 'Prayer info currently unavailable'}</p></div>`;
+            }
+            
+            showInfoModal(title, content);
+        }
+
+        function showSunnahInfo(type) {
+             if (!IslamicContentData || !IslamicContentData[type]) return;
+             const data = IslamicContentData[type];
+             showInfoModal(data.title, data.content);
+        }
+
+        // Load Adhan settings from storage
+        function loadAdhanSettings() {
+            adhanPrayers.forEach(prayer => {
+                const enabled = storage.get(`adhan_${prayer}`, true);
+                // Will be applied when prayer cards are rendered
+            });
+        }
+        
+        // Toggle Adhan for a specific prayer
+        function toggleAdhan(prayer) {
+            const current = storage.get(`adhan_${prayer}`, true);
+            storage.set(`adhan_${prayer}`, !current);
+            
+            // Update UI
+            const btn = document.getElementById(`adhan-btn-${prayer}`);
+            if (btn) {
+                btn.classList.toggle('active', !current);
+                btn.querySelector('.adhan-icon').textContent = !current ? '🔔' : '🔕';
+            }
+            
+            app.showToast(!current ? localization.tr('adhan_enabled') : localization.tr('adhan_disabled'), 'success');
+        }
+        
+        // Search prayer times
+        async function searchPrayerTimes() {
+            const city = document.getElementById('city-input').value.trim();
+            const country = document.getElementById('country-input').value.trim();
+            
+            if (!city) {
+                app.showToast(localization.tr('enter_city'), 'error');
+                return;
+            }
+            
+            // Save location
+            storage.lastCity = city;
+            storage.lastCountry = country || 'Egypt';
+            
+            await loadPrayerTimes(city, country || 'Egypt');
+        }
+        
+        // Get location using GPS
+        async function getLocation() {
+            if (!navigator.geolocation) {
+                app.showToast('Geolocation not supported', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000
+                    });
+                });
+                
+                const { latitude, longitude } = position.coords;
+                
+                // Get prayer times by coordinates
+                const data = await api.getPrayerTimingsByCoords(latitude, longitude);
+                
+                // Update inputs with detected location
+                const city = data.meta?.timezone?.split('/')[1] || 'Unknown';
+                document.getElementById('city-input').value = city;
+                document.getElementById('country-input').value = '';
+                
+                displayPrayerTimes(data);
+                
+            } catch (error) {
+                console.error('Location error:', error);
+                app.showToast(localization.tr('location_permission_denied'), 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Load prayer times
+        async function loadPrayerTimes(city, country) {
+            showLoading(true);
+            
+            try {
+                const data = await api.getPrayerTimings(city, country);
+                displayPrayerTimes(data);
+                
+                // Schedule notifications
+                if (storage.prayerRemindersEnabled) {
+                    notifications.schedulePrayerNotifications(data.timings);
+                }
+            } catch (error) {
+                console.error('Error loading prayer times:', error);
+                app.showToast(localization.tr('error'), 'error');
+                displayEmptyState();
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Display prayer times
+        function displayPrayerTimes(data) {
+            const { timings, date } = data;
+            currentTimings = timings;
+            const isArabic = localization.isArabic;
+            
+            // Update dates
+            if (date) {
+                document.getElementById('gregorian-date').textContent = date.readable;
+                document.getElementById('gregorian-weekday').textContent = 
+                    localization.tr(date.gregorian?.weekday?.en || 'Sunday');
+                
+                const hijriDay = date.hijri?.day;
+                const hijriMonth = isArabic ? date.hijri?.month?.ar : date.hijri?.month?.en;
+                const hijriYear = date.hijri?.year;
+                document.getElementById('hijri-date').textContent = `${hijriDay} ${hijriMonth} ${hijriYear}`;
+                document.getElementById('hijri-weekday').textContent = 
+                    isArabic ? date.hijri?.weekday?.ar : date.hijri?.weekday?.en;
+            }
+            
+            // Start countdown
+            startCountdown(timings);
+            
+            // Get current prayer
+            const currentPrayer = app.getCurrentPrayer(timings);
+            
+            // Display main prayers
+            const prayerGrid = document.getElementById('prayer-grid');
+            prayerGrid.innerHTML = '';
+            
+            mainPrayers.forEach((prayer, index) => {
+                const time = timings[prayer]?.split(' ')[0];
+                if (!time) return;
+                
+                const isCurrent = prayer === currentPrayer;
+                const prayerName = isArabic ? prayerNames[prayer].ar : prayerNames[prayer].en;
+                const hasAdhan = adhanPrayers.includes(prayer);
+                const adhanEnabled = storage.get(`adhan_${prayer}`, true);
+                
+                const card = document.createElement('div');
+                card.className = `prayer-card stagger-item fade-in ${isCurrent ? 'current' : ''}`;
+                card.style.backgroundImage = `url('${prayerImages[prayer]}')`;
+                
+                // Info Button HTML
+                const infoBtn = `<div class="info-btn" onclick="event.stopPropagation(); showPrayerInfo('${prayer}')">!</div>`;
+
+                card.innerHTML = `
+                    <div class="prayer-card-content">
+                        <div style="display: flex; align-items: center;">
+                            <span class="prayer-name">${prayerName}</span>
+                            ${infoBtn}
+                        </div>
+                        <span class="prayer-time">${formatTime12(time)}</span>
+                        ${hasAdhan ? `
+                            <button class="adhan-toggle-btn ${adhanEnabled ? 'active' : ''}" 
+                                    id="adhan-btn-${prayer}" 
+                                    onclick="event.stopPropagation(); toggleAdhan('${prayer}')"
+                                    title="${localization.tr('toggle_adhan')}">
+                                <span class="adhan-icon">${adhanEnabled ? '🔔' : '🔕'}</span>
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                prayerGrid.appendChild(card);
+            });
+            
+            // Display sunnah/additional times
+            displaySunnahPrayers(timings);
+        }
+        
+        // Display Sunnah prayers info
+        function displaySunnahPrayers(timings) {
+            if (!timings) return;
+            const isArabic = localization.isArabic;
+            const sunnahSection = document.getElementById('sunnah-times');
+            sunnahSection.innerHTML = '';
+            
+            // 1. Action Buttons (Rakat, Istikhara, etc.)
+            const actionsContainer = document.createElement('div');
+            actionsContainer.style.display = 'flex';
+            actionsContainer.style.gap = '10px';
+            actionsContainer.style.flexWrap = 'wrap';
+            actionsContainer.style.marginBottom = '20px';
+            
+            const actions = [
+                { id: 'rakat', icon: '🔢', title: isArabic ? 'عدد الركعات' : 'Rakat Counts' },
+                { id: 'istikhara', icon: '🤲', title: isArabic ? 'استخارة' : 'Istikhara' },
+                { id: 'khusuf', icon: '🌑', title: isArabic ? 'خسوف' : 'Khusuf' },
+                { id: 'istisqa', icon: '🌧️', title: isArabic ? 'استسقاء' : 'Istisqa' },
+            ];
+
+            actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline';
+                btn.style.fontSize = '0.9rem';
+                btn.style.padding = '8px 12px';
+                btn.style.flex = '1 1 calc(50% - 10px)';
+                btn.innerHTML = `<span style="margin-left:8px;">${action.icon}</span> <span>${action.title}</span>`;
+                btn.onclick = () => window.location.href = `Info/?id=${action.id}`;
+                actionsContainer.appendChild(btn);
+            });
+            sunnahSection.appendChild(actionsContainer);
+            
+            // 2. Duha & Qiyam (Specific Request)
+            const sunriseStr = timings['Sunrise'].split(' ')[0];
+            const dhuhrStr = timings['Dhuhr'].split(' ')[0];
+            const duhaStart = addMinutes(sunriseStr, 30); // Start: 30 mins after Sunrise
+            const duhaEnd = addMinutes(dhuhrStr, -30); // End: 30 mins before Dhuhr
+
+            const isha = timings['Isha'].split(' ')[0];
+            const fajr = timings['Fajr'].split(' ')[0];
+            
+            const sunnahItems = [
+                {
+                    key: 'Duha',
+                    title: isArabic ? 'صلاة الضحى' : 'Duha Prayer',
+                    time: `${formatTime12(duhaStart)} - ${formatTime12(duhaEnd)}`,
+                    icon: '☀️',
+                    action: "window.location.href = 'Info/?id=duha'"
+                },
+                {
+                    key: 'Qiyam',
+                    title: isArabic ? 'قيام الليل' : 'Qiyam al-Layl',
+                    time: `${formatTime12(isha)} - ${formatTime12(fajr)}`,
+                    icon: '🌙',
+                    action: "window.location.href = 'Info/?id=qiyam'"
+                }
+            ];
+
+            const sunnahList = document.createElement('div');
+            sunnahItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'list-item';
+                el.style.marginBottom = '10px';
+                el.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="item-number" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(12,121,54,0.1); border-radius: 8px;">${item.icon}</div>
+                            <div>
+                                <div class="item-title" style="font-weight: 600;">${item.title}</div>
+                                <div class="item-subtitle" style="font-size: 0.85rem; color: var(--text-secondary);">${item.time}</div>
+                            </div>
+                        </div>
+                        <div class="info-btn" style="background: var(--primary); color: white; border: none; cursor: pointer;" onclick="${item.action}">!</div>
+                    </div>
+                `;
+                sunnahList.appendChild(el);
+            });
+            sunnahSection.appendChild(sunnahList);
+            
+             // Additional Times Header
+            const additionalHeader = document.createElement('div');
+            additionalHeader.innerHTML = `<h4 style="color: var(--primary); margin: 24px 0 12px; font-size: 1rem; border-bottom: 1px solid var(--surface); padding-bottom: 8px;">${isArabic ? 'أوقات أخرى' : 'Other Times'}</h4>`;
+            sunnahSection.appendChild(additionalHeader);
+            
+            // 3. Additional Times (Imsak, Midnight etc)
+             additionalPrayers.forEach(prayer => {
+                const time = timings[prayer]?.split(' ')[0];
+                if (!time || time === '(-)') return;
+                
+                const prayerName = isArabic ? prayerNames[prayer].ar : prayerNames[prayer].en;
+                
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="item-number">⏱️</div>
+                    <div class="item-text">
+                        <div class="item-title">${prayerName}</div>
+                    </div>
+                    <div style="font-weight: 600; color: var(--primary);">${formatTime12(time)}</div>
+                `;
+                sunnahSection.appendChild(item);
+            });
+        }
+        
+        function addMinutes(timeStr, minutesToAdd) {
+             const [hours, minutes] = timeStr.split(':').map(Number);
+             const date = new Date();
+             date.setHours(hours, minutes + minutesToAdd);
+             return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        }
+
+
+        // Start countdown timer
+        function startCountdown(timings) {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            function updateCountdown() {
+                const next = getNextPrayer(timings);
+                if (!next) return;
+                
+                const isArabic = localization.isArabic;
+                const prayerName = isArabic ? prayerNames[next.name]?.ar : prayerNames[next.name]?.en;
+                
+                document.getElementById('next-prayer-name').textContent = prayerName || next.name;
+                document.getElementById('next-prayer-time').textContent = formatTime12(next.time);
+                
+                const now = new Date();
+                const [hours, minutes] = next.time.split(':').map(Number);
+                let prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
+                
+                // If prayer time has passed, it's tomorrow's Fajr
+                if (prayerTime <= now) {
+                    prayerTime.setDate(prayerTime.getDate() + 1);
+                }
+                
+                const diff = prayerTime - now;
+                const h = Math.floor(diff / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                document.getElementById('countdown-hours').textContent = String(h).padStart(2, '0');
+                document.getElementById('countdown-minutes').textContent = String(m).padStart(2, '0');
+                document.getElementById('countdown-seconds').textContent = String(s).padStart(2, '0');
+            }
+            
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        // Get next prayer
+        function getNextPrayer(timings) {
+            const now = new Date();
+            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            
+            for (const prayer of prayers) {
+                const time = timings[prayer]?.split(' ')[0];
+                if (!time) continue;
+                
+                const [hours, minutes] = time.split(':').map(Number);
+                const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
+                
+                if (prayerTime > now) {
+                    return { name: prayer, time };
+                }
+            }
+            
+            // All prayers passed, return tomorrow's Fajr
+            return { name: 'Fajr', time: timings['Fajr']?.split(' ')[0] || '05:00' };
+        }
+        
+        // Format time to 12-hour format
+        function formatTime12(time) {
+            if (!time) return '--:--';
+            
+            const [hours, minutes] = time.split(':');
+            const hour = parseInt(hours, 10);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+        
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+            document.getElementById('prayer-grid').style.display = show ? 'none' : 'grid';
+        }
+        
+        // Display empty state
+        function displayEmptyState() {
+            const prayerGrid = document.getElementById('prayer-grid');
+            prayerGrid.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <div class="empty-icon">🕌</div>
+                    <div class="empty-text" data-i18n="no_data">${localization.tr('no_data')}</div>
+                </div>
+            `;
+        }
+        
+        // Handle Enter key in inputs
+        document.getElementById('city-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchPrayerTimes();
+        });
+        document.getElementById('country-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchPrayerTimes();
+        });
+    </script>
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeInfoModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splash-screen">
+        <img src="assets/images/icon.png" alt="MKS Muslim" class="splash-logo">
+        <div class="splash-title">MKS Muslim</div>
+        <div class="splash-loader"></div>
+    </div>
+
+    <script>
+        // Splash Screen Logic
+        window.addEventListener('load', () => {
+             // Minimum time to show splash (e.g. 2.5s to match animation mostly)
+             setTimeout(() => {
+                 const splash = document.getElementById('splash-screen');
+                 if(splash) {
+                     splash.classList.add('hidden');
+                     setTimeout(() => splash.remove(), 800); // Remove from DOM after fade
+                 }
+             }, 3000); // 3 seconds total like Flutter app
+        });
+    </script>
+</body>
+</html>
