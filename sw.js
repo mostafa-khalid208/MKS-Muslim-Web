@@ -7,7 +7,7 @@
  *   - External APIs  → Network First with cache fallback
  */
 
-const CACHE_NAME = 'mks-muslim-v2.0.0';
+const CACHE_NAME = 'mks-muslim-v2.1.0';
 
 // Only cache heavy static assets (images/audio) with Cache-First
 const CACHE_FIRST_PATTERNS = [
