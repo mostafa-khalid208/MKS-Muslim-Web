@@ -1,53 +1,50 @@
 /**
  * MKS Muslim - Service Worker
  * Enables PWA features and offline caching
+ * Strategy:
+ *   - HTML, JS, CSS → Network First (always get latest updates)
+ *   - Images, Audio  → Cache First  (rarely change, safe to cache)
+ *   - External APIs  → Network First with cache fallback
  */
 
-const CACHE_NAME = 'mks-muslim-v1.1.1';
+const CACHE_NAME = 'mks-muslim-v2.0.0';
 
-const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/quran.html',
-    '/tasbih.html',
-    '/hadith.html',
-    '/qibla.html',
-    '/settings.html',
-    '/about.html',
-    '/css/style.css',
-    '/js/app.js',
-    '/js/api.js',
-    '/js/localization.js',
-    '/js/storage.js',
-    '/js/notifications.js',
-    '/assets/images/My Logo Palestine.png',
-    '/assets/audio/audio_merger_الاذن_مع_الدعاء.mp3'
+// Only cache heavy static assets (images/audio) with Cache-First
+const CACHE_FIRST_PATTERNS = [
+    /\.(png|jpg|jpeg|gif|svg|ico|webp)$/i,
+    /\.(mp3|wav|ogg|aac)$/i,
+    /fonts\.googleapis\.com/,
+    /fonts\.gstatic\.com/,
+    /cdnjs\.cloudflare\.com/
 ];
 
-// Install event - cache static assets
+// External APIs - Network First with cache fallback (no-store for fresh data)
+const EXTERNAL_API_PATTERNS = [
+    /api\.aladhan\.com/,
+    /api\.alquran\.cloud/,
+    /api\.hadith\.gading\.dev/,
+    /api3\.islamhouse\.com/
+];
+
+// Install event - cache only heavy static assets
 self.addEventListener('install', (event) => {
     console.log('Service Worker: Installing...');
-    
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('Service Worker: Caching static assets');
-                return cache.addAll(STATIC_ASSETS);
-            })
-            .then(() => {
                 console.log('Service Worker: Install complete');
-                return self.skipWaiting();
+                return Promise.resolve();
             })
             .catch((error) => {
                 console.error('Service Worker: Install failed', error);
             })
     );
+    self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
     console.log('Service Worker: Activating...');
-    
     event.waitUntil(
         caches.keys()
             .then((cacheNames) => {
@@ -67,71 +64,68 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event
 self.addEventListener('fetch', (event) => {
     const { request } = event;
-    
+    const url = request.url;
+
     // Skip non-GET requests
-    if (request.method !== 'GET') {
-        return;
-    }
-    
-    // Skip API requests - always fetch from network
-    if (request.url.includes('api.aladhan.com') || 
-        request.url.includes('api.alquran.cloud')) {
+    if (request.method !== 'GET') return;
+
+    // External APIs → Network First with cache fallback
+    if (EXTERNAL_API_PATTERNS.some(p => p.test(url))) {
         event.respondWith(
             fetch(request)
-                .catch(() => {
-                    // Return cached API response if available
-                    return caches.match(request);
+                .then((response) => {
+                    if (response.ok) {
+                        const clone = response.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+                    }
+                    return response;
                 })
+                .catch(() => caches.match(request))
         );
         return;
     }
-    
-    // For other requests, try cache first, then network
+
+    // Images & Audio → Cache First (safe to cache, rarely change)
+    if (CACHE_FIRST_PATTERNS.some(p => p.test(url))) {
+        event.respondWith(
+            caches.match(request).then((cached) => {
+                if (cached) return cached;
+                return fetch(request).then((response) => {
+                    if (response.ok) {
+                        const clone = response.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+                    }
+                    return response;
+                }).catch(() => new Response('', { status: 503 }));
+            })
+        );
+        return;
+    }
+
+    // HTML, JS, CSS, and everything else → Network First
+    // Always try network first to get latest updates
     event.respondWith(
-        caches.match(request)
-            .then((cachedResponse) => {
-                if (cachedResponse) {
-                    // Return cached response and update cache in background
-                    event.waitUntil(
-                        fetch(request)
-                            .then((networkResponse) => {
-                                if (networkResponse.ok) {
-                                    caches.open(CACHE_NAME)
-                                        .then((cache) => {
-                                            cache.put(request, networkResponse);
-                                        });
-                                }
-                            })
-                            .catch(() => {
-                                // Ignore network errors for background updates
-                            })
-                    );
-                    return cachedResponse;
+        fetch(request)
+            .then((response) => {
+                if (response.ok) {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
                 }
-                
-                // Not in cache, fetch from network
-                return fetch(request)
-                    .then((networkResponse) => {
-                        // Cache successful responses
-                        if (networkResponse.ok) {
-                            const responseClone = networkResponse.clone();
-                            caches.open(CACHE_NAME)
-                                .then((cache) => {
-                                    cache.put(request, responseClone);
-                                });
-                        }
-                        return networkResponse;
-                    })
-                    .catch(() => {
-                        // Return offline page for navigation requests
-                        if (request.mode === 'navigate') {
-                            return caches.match('/index.html');
-                        }
-                        return new Response('Offline', { status: 503 });
-                    });
+                return response;
+            })
+            .catch(() => {
+                // Network failed → serve from cache as offline fallback
+                return caches.match(request).then((cached) => {
+                    if (cached) return cached;
+                    // Last resort: return index.html for navigation requests
+                    if (request.mode === 'navigate') {
+                        return caches.match('/index.html');
+                    }
+                    return new Response('Offline', { status: 503 });
+                });
             })
     );
 });
@@ -147,9 +141,7 @@ async function syncPrayerTimes() {
     try {
         const clients = await self.clients.matchAll();
         clients.forEach((client) => {
-            client.postMessage({
-                type: 'SYNC_PRAYER_TIMES'
-            });
+            client.postMessage({ type: 'SYNC_PRAYER_TIMES' });
         });
     } catch (error) {
         console.error('Background sync failed:', error);
@@ -163,12 +155,10 @@ self.addEventListener('periodicsync', (event) => {
     }
 });
 
-// Push notifications (if needed in future)
+// Push notifications
 self.addEventListener('push', (event) => {
     if (!event.data) return;
-    
     const data = event.data.json();
-    
     const options = {
         body: data.body || 'إشعار جديد',
         icon: '/assets/images/My Logo Palestine.png',
@@ -178,7 +168,6 @@ self.addEventListener('push', (event) => {
         requireInteraction: data.requireInteraction || false,
         data: data.data || {}
     };
-    
     event.waitUntil(
         self.registration.showNotification(data.title || 'MKS Muslim', options)
     );
@@ -187,20 +176,13 @@ self.addEventListener('push', (event) => {
 // Notification click handler
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
-    
     event.waitUntil(
         self.clients.matchAll({ type: 'window' })
             .then((clientList) => {
-                // Focus existing window if available
                 for (const client of clientList) {
-                    if ('focus' in client) {
-                        return client.focus();
-                    }
+                    if ('focus' in client) return client.focus();
                 }
-                // Open new window
-                if (self.clients.openWindow) {
-                    return self.clients.openWindow('/');
-                }
+                if (self.clients.openWindow) return self.clients.openWindow('/');
             })
     );
 });
