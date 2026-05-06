@@ -1,0 +1,105 @@
+/* Quiz Specific Styles */
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(12, 121, 54, 0.2);
+    padding-bottom: 15px;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: rgba(12, 121, 54, 0.1);
+    color: var(--primary);
+}
+
+.score-badge {
+    background: var(--gold);
+    color: white;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.option-btn {
+    padding: 16px 20px;
+    background: var(--card);
+    border: 2px solid var(--surface);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(12, 121, 54, 0.05);
+    transform: translateY(-2px);
+}
+
+.option-btn.correct {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: #4CAF50;
+    color: #2E7D32;
+}
+
+[data-theme="dark"] .option-btn.correct {
+    color: #81C784;
+}
+
+.option-btn.wrong {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: #F44336;
+    color: #C62828;
+}
+
+[data-theme="dark"] .option-btn.wrong {
+    color: #E57373;
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.option-letter {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border-radius: 50%;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.option-btn.correct .option-letter {
+    background: #4CAF50;
+    color: white;
+}
+
+.option-btn.wrong .option-letter {
+    background: #F44336;
+    color: white;
+}

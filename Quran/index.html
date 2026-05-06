@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+    <div id="particles-container"></div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -42,7 +43,7 @@
                     <button class="lang-btn active" data-lang="ar">العربية</button>
                     <button class="lang-btn" data-lang="en">English</button>
                 </div>
-                <div class="version-text">v1.1.1</div>
+                <div class="version-text">v1.1.3</div>
             </div>
         </aside>
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -57,6 +58,66 @@
             <div class="page-header fade-in">
                 <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
                 <h1 class="page-title" data-i18n="quran">القرآن الكريم</h1>
+            </div>
+
+            <!-- Khatma Tracker Card -->
+            <div class="card glass-panel fade-in slide-in-up" id="khatma-tracker-card" style="margin-bottom: 20px;">
+                <div class="card-header" style="justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="card-icon primary">📈</div>
+                        <div>
+                            <h3 class="card-title" data-i18n="khatma_tracker">عداد الختمة</h3>
+                            <p class="card-subtitle" data-i18n="khatma_tracker_desc">تابع تقدمك في تلاوة القرآن الكريم</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center; background: rgba(12, 121, 54, 0.1); padding: 10px 20px; border-radius: 12px; border: 1px solid var(--primary);">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);" data-i18n="khatma_count">عدد الختمات</div>
+                        <div id="khatma-count-display" style="font-size: 1.8rem; font-weight: bold; color: var(--primary); line-height: 1;">0</div>
+                    </div>
+                </div>
+                
+                <div class="khatma-stats" style="margin-top: 20px;">
+                    <!-- Juz Progress -->
+                    <div class="progress-section" style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600;">
+                            <span data-i18n="juz">الجزء</span>
+                            <span id="juz-progress-text">0 / 30</span>
+                        </div>
+                        <div style="background: rgba(12, 121, 54, 0.1); border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 10px;">
+                            <div id="juz-progress-bar" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-outline" onclick="updateKhatma('juz', -1)" style="flex: 1; padding: 8px;">-</button>
+                            <input type="number" id="juz-input" min="0" max="30" value="0" style="flex: 2; text-align: center; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: var(--text-primary); font-size: 1.1rem; outline: none;" oninput="setKhatma('juz', this.value)">
+                            <button class="btn btn-primary" onclick="updateKhatma('juz', 1)" style="flex: 1; padding: 8px;">+</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Page Progress -->
+                    <div class="progress-section">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600;">
+                            <span data-i18n="page">الصفحة</span>
+                            <span id="page-progress-text">0 / 604</span>
+                        </div>
+                        <div style="background: rgba(12, 121, 54, 0.1); border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 10px;">
+                            <div id="page-progress-bar" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-outline" onclick="updateKhatma('page', -1)" style="flex: 1; padding: 8px;">-</button>
+                            <input type="number" id="page-input" min="0" max="604" value="0" style="flex: 2; text-align: center; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: var(--text-primary); font-size: 1.1rem; outline: none;" oninput="setKhatma('page', this.value)">
+                            <button class="btn btn-primary" onclick="updateKhatma('page', 1)" style="flex: 1; padding: 8px;">+</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px; display: flex; gap: 10px;">
+                        <button class="btn btn-outline" style="flex: 1; border-color: #D32F2F; color: #D32F2F;" onclick="resetKhatmaProgress()">
+                            <span data-i18n="reset_progress">تصفير الورد (الصفحات)</span>
+                        </button>
+                        <button class="btn btn-outline" style="flex: 1; border-color: #D32F2F; color: #D32F2F;" onclick="resetKhatmaCount()">
+                            <span data-i18n="reset_khatma_count">تصفير الختمات</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Search -->
@@ -153,6 +214,7 @@
     <script src="../js/api.js"></script>
     <script src="../js/notifications.js"></script>
     <script src="../js/app.js"></script>
+    <script src="../js/particles.js"></script>
     
     <script>
         let allSurahs = [];
@@ -163,11 +225,103 @@
         let currentAyahIndex = 0;
         
         document.addEventListener('DOMContentLoaded', async () => {
+            loadKhatma();
             await loadSurahs();
             checkLastRead();
             loadBookmarks();
             setupAudioPlayer();
         });
+        
+        // Khatma Tracker Logic
+        function loadKhatma() {
+            const juz = parseInt(storage.get('khatma_juz', 0));
+            const page = parseInt(storage.get('khatma_page', 0));
+            const count = parseInt(storage.get('khatma_count', 0));
+            
+            document.getElementById('juz-input').value = juz;
+            document.getElementById('page-input').value = page;
+            document.getElementById('khatma-count-display').textContent = count;
+            
+            updateKhatmaUI('juz', juz);
+            updateKhatmaUI('page', page);
+        }
+        
+        function updateKhatma(type, change) {
+            const input = document.getElementById(`${type}-input`);
+            let val = parseInt(input.value) + change;
+            setKhatma(type, val);
+        }
+        
+        function setKhatma(type, value) {
+            let max = type === 'juz' ? 30 : 604;
+            let val = parseInt(value);
+            
+            if (isNaN(val) || val < 0) val = 0;
+            if (val > max) val = max;
+            
+            document.getElementById(`${type}-input`).value = val;
+            storage.set(`khatma_${type}`, val);
+            
+            updateKhatmaUI(type, val);
+            
+            // Auto-sync Juz if Page is updated
+            if (type === 'page') {
+                let syncedJuz = val === 0 ? 0 : Math.floor((val - 1) / 20) + 1;
+                if (syncedJuz > 30) syncedJuz = 30;
+                document.getElementById('juz-input').value = syncedJuz;
+                storage.set('khatma_juz', syncedJuz);
+                updateKhatmaUI('juz', syncedJuz);
+                
+                // When reached 604 pages, increment khatma count
+                if(val === max && parseInt(storage.get('khatma_completed_flag', 0)) === 0) {
+                    incrementKhatmaCount();
+                    storage.set('khatma_completed_flag', 1); // Prevent multiple increments
+                    app.showToast(localization.currentLang === 'en' ? 'Congratulations! Khatma count increased.' : 'مبارك ختم القرآن الكريم! تم زيادة عدد الختمات.', 'success');
+                } else if (val < max) {
+                    storage.set('khatma_completed_flag', 0); // Reset flag when they go back
+                }
+            } else if (type === 'juz') {
+                // Auto-sync Page if Juz is updated
+                let syncedPage = val === 0 ? 0 : (val - 1) * 20 + 1;
+                if (syncedPage > 604) syncedPage = 604;
+                document.getElementById('page-input').value = syncedPage;
+                storage.set('khatma_page', syncedPage);
+                updateKhatmaUI('page', syncedPage);
+                
+                if (val < 30) {
+                    storage.set('khatma_completed_flag', 0);
+                }
+            }
+        }
+        
+        function incrementKhatmaCount() {
+             let count = parseInt(storage.get('khatma_count', 0)) + 1;
+             storage.set('khatma_count', count);
+             document.getElementById('khatma-count-display').textContent = count;
+        }
+
+        function resetKhatmaProgress() {
+             if(confirm(localization.currentLang === 'en' ? 'Are you sure you want to reset current progress (pages and juz)?' : 'هل أنت متأكد من تصفير الورد الحالي (الصفحات والأجزاء)؟')) {
+                 document.getElementById('page-input').value = 0;
+                 document.getElementById('juz-input').value = 0;
+                 setKhatma('page', 0);
+             }
+        }
+
+        function resetKhatmaCount() {
+             if(confirm(localization.currentLang === 'en' ? 'Are you sure you want to reset the total Khatma count? This cannot be undone.' : 'هل أنت متأكد من تصفير إجمالي عدد الختمات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                 storage.set('khatma_count', 0);
+                 document.getElementById('khatma-count-display').textContent = '0';
+             }
+        }
+        
+        function updateKhatmaUI(type, val) {
+            let max = type === 'juz' ? 30 : 604;
+            let percentage = (val / max) * 100;
+            
+            document.getElementById(`${type}-progress-text`).textContent = `${val} / ${max}`;
+            document.getElementById(`${type}-progress-bar`).style.width = `${percentage}%`;
+        }
         
         function setupAudioPlayer() {
             audioPlayer.addEventListener('ended', () => {

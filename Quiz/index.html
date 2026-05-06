@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0c7936">
+    <meta name="description" content="MKS Muslim - مسابقة 1000+ سؤال إسلامي">
+    <title>MKS Muslim - المسابقة الإسلامية</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="particles-container"></div>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/images/icon.png" alt="MKS Muslim" class="logo-icon" style="padding: 0; background: transparent;">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+                <div class="basmalah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                <div class="app-name">MKS Muslim</div>
+                <div class="app-tagline" data-i18n="app_tagline">تطبيق إسلامي شامل</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../" class="nav-item"><div class="nav-icon">🕐</div><span class="nav-text" data-i18n="nav_prayer">الصلاة</span><div class="nav-indicator"></div></a>
+                <a href="../Quran/" class="nav-item"><div class="nav-icon">📖</div><span class="nav-text" data-i18n="nav_quran">القرآن</span><div class="nav-indicator"></div></a>
+                <a href="../Tasbih/" class="nav-item"><div class="nav-icon">📿</div><span class="nav-text" data-i18n="nav_tasbih">تسبيح</span><div class="nav-indicator"></div></a>
+                <a href="../Tasks/" class="nav-item"><div class="nav-icon">✅</div><span class="nav-text" data-i18n="nav_tasks">المهام</span><div class="nav-indicator"></div></a>
+                <a href="../Culture/" class="nav-item"><div class="nav-icon">📚</div><span class="nav-text" data-i18n="nav_culture">ثقافة</span><div class="nav-indicator"></div></a>
+                <a href="../Hadith/" class="nav-item"><div class="nav-icon">📜</div><span class="nav-text" data-i18n="nav_hadith">الأحاديث</span><div class="nav-indicator"></div></a>
+                <a href="../Qibla/" class="nav-item"><div class="nav-icon">🧭</div><span class="nav-text" data-i18n="nav_qibla">البوصلة</span><div class="nav-indicator"></div></a>
+                <a href="../Quiz/" class="nav-item active"><div class="nav-icon">❓</div><span class="nav-text">المسابقة</span><div class="nav-indicator"></div></a>
+                <a href="../Radio/" class="nav-item"><div class="nav-icon">📻</div><span class="nav-text">الراديو</span><div class="nav-indicator"></div></a>
+                <div class="sidebar-divider"></div>
+                <a href="../Settings/" class="nav-item"><div class="nav-icon">⚙️</div><span class="nav-text" data-i18n="nav_settings">الإعدادات</span><div class="nav-indicator"></div></a>
+                <a href="../About/" class="nav-item"><div class="nav-icon">ℹ️</div><span class="nav-text" data-i18n="nav_about">عن التطبيق</span><div class="nav-indicator"></div></a>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+                <div class="version-text">v1.1.3</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <main class="main-content">
+            <header class="mobile-header">
+                <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+                <div class="app-title"><span class="mks">MKS</span><span class="muslim">Muslim</span></div>
+                <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
+            </header>
+            
+            <div class="page-header fade-in">
+                <h1 class="page-title">المسابقة الإسلامية</h1>
+                <p>اختبر معلوماتك الدينية بأسئلة متنوعة</p>
+            </div>
+            
+            <!-- Quiz Start Screen -->
+            <div id="start-screen" class="card glass-panel fade-in" style="text-align: center; padding: 40px 20px;">
+                <div style="font-size: 4rem; margin-bottom: 20px;" class="icon animate-on-scroll">🧠</div>
+                <h2 id="start-title">مسابقة 1000+ سؤال</h2>
+                <p id="start-desc" style="margin: 20px 0; color: var(--text-secondary);">في كل جولة سيتم اختيار 10 أسئلة عشوائياً لاختبار معرفتك بالقرآن الكريم والسنة النبوية والثقافة الإسلامية.</p>
+                <button id="start-btn" class="btn btn-primary animate-on-scroll" onclick="startQuiz()" style="font-size: 1.2rem; padding: 15px 40px; margin-top: 20px;">
+                    ابدأ المسابقة الآن
+                </button>
+            </div>
+
+            <!-- Quiz Question Screen -->
+            <div id="quiz-screen" class="card glass-panel fade-in" style="display: none;">
+                <div class="quiz-header">
+                    <span id="question-counter" class="badge">السؤال 1 / 10</span>
+                    <span id="score-display" class="badge score-badge">النقاط: 0</span>
+                </div>
+                
+                <h3 id="question-text" style="margin: 30px 0; font-size: 1.4rem; line-height: 1.6; text-align: center;"></h3>
+                
+                <div id="options-container" class="options-grid">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+
+            <!-- Quiz Result Screen -->
+            <div id="result-screen" class="card glass-panel fade-in" style="display: none; text-align: center; padding: 40px 20px;">
+                <div id="result-icon" style="font-size: 5rem; margin-bottom: 20px;" class="icon">🏆</div>
+                <h2 id="result-title">انتهت المسابقة!</h2>
+                <div id="result-text-container" style="font-size: 1.5rem; margin: 20px 0;">
+                    لقد أجبت بشكل صحيح على
+                    <strong id="final-score" style="color: var(--primary); font-size: 2rem;">0</strong>
+                    من أصل 10
+                </div>
+                <p id="result-message" style="color: var(--text-secondary); margin-bottom: 30px;"></p>
+                <button id="retry-btn" class="btn btn-primary" onclick="startQuiz()">
+                    <span>🔄</span> حاول مرة أخرى
+                </button>
+            </div>
+            
+        </main>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script src="../js/localization.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/particles.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

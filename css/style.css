@@ -2100,5 +2100,146 @@ p {
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
+
+/* ========================================
+   Glassmorphism & Particles (v1.1.3 Updates)
+   ======================================== */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="dark"] .glass-panel {
+    background: rgba(30, 30, 30, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.15;
+    pointer-events: none;
+    animation: float 15s infinite linear;
+}
+
+[data-theme="dark"] .particle {
+    opacity: 0.1;
+    background: var(--primary-light);
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-100px) scale(1.2);
+    }
+    100% {
+        transform: translateY(-200px) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   Advanced Animations & Transitions
+   ======================================== */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 3D Hover Effects for Cards */
+.card, .glass-panel {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card:hover, .glass-panel:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(12, 121, 54, 0.15) !important;
+}
+
+[data-theme="dark"] .card:hover, [data-theme="dark"] .glass-panel:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Hover effects for icons inside cards */
+.icon, .nav-icon {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover .icon, .nav-item:hover .nav-icon {
+    transform: scale(1.15) rotate(-10deg);
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleInAnim {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+.scale-in {
+    animation: scaleInAnim 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInUpAnim {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.slide-in-up {
+    animation: slideInUpAnim 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Scroll Animations & 3D Hover Effects (v1.1.3) */
+@keyframes fadeInAnim {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInAnim 0.6s ease-out forwards; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+@keyframes animateOnScrollAnim {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-on-scroll {
+    animation: animateOnScrollAnim 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.card, .station-card, .list-item, .glass-panel {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+.card:hover, .station-card:hover, .list-item:hover, .glass-panel:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+[data-theme="dark"] .card:hover, [data-theme="dark"] .station-card:hover, [data-theme="dark"] .list-item:hover, [data-theme="dark"] .glass-panel:hover {
+    box-shadow: 0 15px 35px rgba(12, 121, 54, 0.2);
+}
+
+.nav-item .nav-icon { transition: transform 0.3s ease; }
+.nav-item:hover .nav-icon { transform: scale(1.2) rotate(-10deg); }

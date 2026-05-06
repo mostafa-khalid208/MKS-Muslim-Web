@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div id="particles-container"></div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -69,6 +70,16 @@
                     <span class="nav-text" data-i18n="nav_qibla">البوصلة</span>
                     <div class="nav-indicator"></div>
                 </a>
+                <a href="Quiz/" class="nav-item">
+                    <div class="nav-icon">❓</div>
+                    <span class="nav-text">المسابقة</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="Radio/" class="nav-item">
+                    <div class="nav-icon">📻</div>
+                    <span class="nav-text">الراديو</span>
+                    <div class="nav-indicator"></div>
+                </a>
                 
                 <div class="sidebar-divider"></div>
                 
@@ -90,7 +101,7 @@
                     <button class="lang-btn active" data-lang="ar">العربية</button>
                     <button class="lang-btn" data-lang="en">English</button>
                 </div>
-                <div class="version-text">v1.1.1</div>
+                <div class="version-text">v1.1.3</div>
             </div>
         </aside>
         
@@ -178,7 +189,7 @@
             
             <!-- Logo -->
             <div class="logo-container fade-in" style="animation-delay: 250ms;">
-                <img src="assets/images/My Logo Palestine.png" alt="MKS Muslim Logo" class="logo-image">
+                <img src="assets/images/icon.png" alt="MKS Muslim Logo" class="logo-image">
             </div>
             
             <!-- Loading State -->
@@ -255,6 +266,7 @@
     <script src="js/islamic-content.js"></script>
     <script src="js/api.js"></script>
     <script src="js/notifications.js"></script>
+    <script src="js/particles.js"></script>
     <script src="js/app.js"></script>
     
     <script>

@@ -4,6 +4,7 @@
 
 # 🕌 MKS Muslim Web | المسلم
 ### Your Comprehensive Islamic Companion | رفيقك الإسلامي الشامل
+**Version v1.1.3**
 *Start your day with faith, guidance, and peace.*
 *ابدأ يومك بالإيمان، الهداية، والسكينة.*
 
@@ -25,6 +26,15 @@
 
 ---
 
+## الميزات الجديدة في تحديث 1.1.3 / 1.1.3
+- **الراديو الإسلامي**: تشغيل إذاعة القرآن الكريم مباشرة، مع دعم الترددات للاستماع عبر الراديو العادي. يتضمن واجهة تشغيل متطورة (تشغيل، إيقاف، تحكم بالصوت).
+- **مسابقة إسلامية (1000+ سؤال)**: أسئلة ديناميكية عن القرآن، السور، الشهور الهجرية، ومواقيت الصلاة، تدعم اللغتين العربية والإنجليزية.
+- **عداد الختمة التلقائي**: ربط متقدم بين الجزء والصفحة في القرآن الكريم لتسهيل متابعة الختمة بشكل دقيق، مع أزرار احترافية لتصفير الورد والختمات.
+- **تحديثات الواجهة**: إضافة مؤثرات انتقال فورية (Fade) وإصلاح كافة مشاكل اختفاء الصفحات، وتوحيد دعم الوضع الداكن والفاتح في جميع الصفحات.
+- **دعم PWA**: تم تحسين التطبيق ليعمل كبرنامج منفصل مع اختصار لتحديث التطبيق مباشرة.
+
+---
+
 ## ⭐ Key Features | المميزات الرئيسية
 
 ### 🕋 1. Prayer Times & Adhan | مواقيت الصلاة والأذان
@@ -35,11 +45,13 @@
 *   **Remaining Time**: Real-time countdown to the next prayer.
     *   *الوقت المتبقي:* عد تنازلي حي للصلاة القادمة.
 
-### 📖 2. The Noble Quran | القرآن الكريم
+### 📖 2. The Noble Quran & Khatma Tracker | القرآن الكريم وعداد الختمة
 *   **Complete Mushaf**: High-quality text with clear typography.
     *   *مصحف كامل:* نصوص عالية الجودة مع خط واضح.
 *   **Audio Recitations**: Integrated audio player for every verse and Surah.
     *   *تلاوات صوتية:* مشغل صوتي مدمج لكل آية وسورة.
+*   **Khatma Tracker (New v1.1.3)**: Track your reading progress by Juz and Pages.
+    *   *عداد الختمة (جديد):* تابع تقدمك في القراءة بالأجزاء والصفحات.
 *   **Bookmarks & Last Read**: 
     *   Save your progress automatically or bookmark specific verses.
     *   *العلامات وآخر قراءة:* حفظ تقدمك تلقائياً أو وضع علامات على آيات محددة.
@@ -66,6 +78,18 @@
 *   **Digital Tasbih**: Interactive counter with vibration feedback (mobile).
     *   *السبحة الإلكترونية:* عداد تفاعلي مع اهتزاز (على الجوال).
 
+### ❓ 6. Islamic Quiz | المسابقة الإسلامية (Updated v1.1.3)
+*   **Dynamic 1000+ Question Bank**: Generate endless random questions dynamically.
+    *   *بنك أسئلة ديناميكي ضخم:* توليد آلاف الأسئلة تلقائياً عن السور والآيات.
+*   **Randomized Rounds**: Each round presents 10 random questions.
+    *   *جولات عشوائية:* تتضمن كل جولة 10 أسئلة عشوائية.
+
+### 📻 7. Quran Radio | إذاعة القرآن
+*   **Egyptian Quran Radio**: Listen to live broadcasts and famous reciters.
+    *   *إذاعة القرآن الكريم:* استمع للبث المباشر وأشهر القراء.
+*   **Offline Frequencies**: View FM/AM stations across Egypt.
+    *   *ترددات البث:* استعراض ترددات الإذاعة في مختلف محافظات مصر للراديو العادي.
+
 ---
 
 ## 💻 Installation (PWA) | التثبيت
@@ -85,8 +109,8 @@
 
 ## 🎨 Design & Colors | التصميم والألوان
 
-Features a **Premium Design System** with seamless Light/Dark modes.
-يتميز **بنظام تصميم فاخر** مع وضعين فاتح وداكن متناغمين.
+Features a **Premium Glassmorphic Design System (v1.1.3)** with seamless Light/Dark modes, 3D hover animations, and floating background particles.
+يتميز **بنظام تصميم زجاجي فاخر** مع وضعين فاتح وداكن متناغمين وتأثيرات حركة ثلاثية الأبعاد (3D Animations) وجزيئات متحركة.
 
 ### 🎨 Color Palette | لوحة الألوان
 
@@ -116,13 +140,6 @@ Features a **Premium Design System** with seamless Light/Dark modes.
 **Made with ❤️ for the Ummah**
 *صُنع بحب للأمة الإسلامية*
 
-*(c) 2026 MKS Muslim Web*
+*(c) 2024-2026 MKS Muslim Web*
 
 </div>
-# MKS-Muslim-Web
-# MKS-Muslim-Web
-<<<<<<< HEAD
-=======
-# MKS-Muslim-Web
->>>>>>> d8e0d2b (first commit)
-# MKS-Muslim-Web

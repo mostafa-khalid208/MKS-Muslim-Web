@@ -43,9 +43,81 @@ class MKSMuslimApp {
             this.sidebar.style.transform = ''; // Clear inline styles
             this.sidebar.classList.remove('open'); // Let CSS handle desktop state
         }
+        
+        // Dynamic Setup for v1.1.3 features across all pages
+        this.setupDynamicNavigation();
+        
+        // Setup Scroll Animations
+        this.setupScrollAnimations();
 
         this.isInitialized = true;
         console.log('MKS Muslim App initialized');
+    }
+
+    // Dynamic Navigation Setup (v1.1.3 updates)
+    setupDynamicNavigation() {
+        const nav = document.querySelector('.sidebar-nav');
+        if (!nav) return;
+        
+        // Determine path prefix based on an existing link
+        const qiblaLink = nav.querySelector('a[href*="Qibla"]');
+        const prefix = (qiblaLink && qiblaLink.getAttribute('href').includes('../')) ? '../' : '';
+
+        const divider = nav.querySelector('.sidebar-divider');
+        
+        // Add Quiz if missing
+        if (!nav.querySelector('a[href*="Quiz"]')) {
+            const quizLink = document.createElement('a');
+            quizLink.href = prefix + 'Quiz/';
+            quizLink.className = 'nav-item';
+            quizLink.innerHTML = '<div class="nav-icon">❓</div><span class="nav-text">المسابقة</span><div class="nav-indicator"></div>';
+            if (divider) nav.insertBefore(quizLink, divider);
+        }
+
+        // Add Radio if missing
+        if (!nav.querySelector('a[href*="Radio"]')) {
+            const radioLink = document.createElement('a');
+            radioLink.href = prefix + 'Radio/';
+            radioLink.className = 'nav-item';
+            radioLink.innerHTML = '<div class="nav-icon">📻</div><span class="nav-text">الراديو</span><div class="nav-indicator"></div>';
+            if (divider) nav.insertBefore(radioLink, divider);
+        }
+        
+        // Ensure particles.js is loaded
+        if (!document.querySelector('script[src*="particles.js"]')) {
+            const script = document.createElement('script');
+            script.src = prefix + 'js/particles.js';
+            document.body.appendChild(script);
+        }
+    }
+
+    // Scroll Animations Observer
+    setupScrollAnimations() {
+        // Automatically add animate-on-scroll class to cards if not present
+        document.querySelectorAll('.card, .station-card').forEach(el => {
+            if (!el.classList.contains('animate-on-scroll') && !el.classList.contains('fade-in')) {
+                el.classList.add('animate-on-scroll');
+            }
+        });
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll, .fade-in, .scale-in, .slide-in-up').forEach(el => {
+            observer.observe(el);
+        });
     }
 
     // Theme Management

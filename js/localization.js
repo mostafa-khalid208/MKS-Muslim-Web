@@ -57,6 +57,13 @@ const translations = {
     continue_reading: { ar: 'استمر في القراءة', en: 'Continue Reading' },
     meccan: { ar: 'مكية', en: 'Meccan' },
     medinan: { ar: 'مدنية', en: 'Medinan' },
+    juz: { ar: 'الجزء', en: 'Juz' },
+    page: { ar: 'الصفحة', en: 'Page' },
+    khatma_tracker: { ar: 'عداد الختمة', en: 'Khatma Tracker' },
+    khatma_tracker_desc: { ar: 'تابع تقدمك في تلاوة القرآن الكريم', en: 'Track your progress in reciting the Holy Quran' },
+    khatma_count: { ar: 'عدد الختمات', en: 'Khatma Count' },
+    reset_progress: { ar: 'تصفير الورد (الصفحات)', en: 'Reset Progress (Pages)' },
+    reset_khatma_count: { ar: 'تصفير الختمات', en: 'Reset Khatma Count' },
 
     // Hadith
     hadith: { ar: 'الأحاديث النبوية', en: 'Prophetic Hadiths' },

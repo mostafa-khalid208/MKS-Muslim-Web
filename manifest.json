@@ -2,9 +2,9 @@
     "id": "mks-muslim-web-app",
     "name": "MKS Muslim",
     "short_name": "MKS Muslim",
-    "description": "تطبيق إسلامي شامل - Comprehensive Islamic App",
+    "description": "تطبيق إسلامي شامل (نسخة متطورة 1.1.3) مع مسابقة 1000+ سؤال وإذاعة القرآن الكريم وعداد الختمة - Comprehensive Islamic App with 1000+ Quiz, Radio & Khatma Tracker",
     "start_url": "/MKS-Muslim-Web/index.html",
-    "display": "standalone",
+    "display": "minimal-ui",
     "background_color": "#0c7936",
     "theme_color": "#0c7936",
     "orientation": "portrait-primary",
@@ -39,5 +39,14 @@
     "dir": "rtl",
     "scope": "/MKS-Muslim-Web/",
     "screenshots": [],
-    "prefer_related_applications": false
+    "prefer_related_applications": false,
+    "shortcuts": [
+        {
+            "name": "إعادة تحميل التطبيق",
+            "short_name": "تحديث",
+            "description": "تحديث التطبيق لإظهار التغييرات",
+            "url": "/MKS-Muslim-Web/index.html?refresh=1",
+            "icons": [{"src": "assets/images/icon.png", "sizes": "192x192"}]
+        }
+    ]
 }
